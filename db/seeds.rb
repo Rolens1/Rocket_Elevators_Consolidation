@@ -1,0 +1,984 @@
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
+#
+# Examples:
+#
+#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
+#   Character.create(name: 'Luke', movie: movies.first)
+Employee.destroy_all
+Quote.destroy_all
+# User.destroy_all
+# Battery.destroy_all
+# Customer.destroy_all
+# Elevator.destroy_all
+# Lead.destroy_all
+# Building.destroy_all
+# Adress.destroy_all
+user1 = User.create!({
+    email: 'mathieu.houde@codeboxx.biz',
+    password: '123456',
+    password_confirmation: '123456',
+    admin: true
+})
+user2 = User.create!({
+    email: 'patrick.thibault@codeboxx.biz',
+    password: '123456',
+    password_confirmation: '123456',
+    admin: true
+})
+user3 = User.create!({
+    email: 'francis.patry-jessop@codeboxx.biz',
+    password: '123456',
+    password_confirmation: '123456',
+    admin: true
+})
+user4 = User.create!({
+    email: 'abdul.akeeb@codebozz.biz',
+    password: '123456',
+    password_confirmation: '123456',
+    admin: true
+})
+user5 = User.create!({
+    email: 'david.amyot@codeboxx.biz',
+    password: '123456',
+    password_confirmation: '123456',
+    admin: true
+})
+user6 = User.create!({
+    email: 'thomas.carrier@codeboxx.biz',
+    password: '123456',
+    password_confirmation: '123456',
+    admin: true
+})
+user7 = User.create!({
+    email: 'timothy.wever@codeboxx.biz',
+    password: '123456',
+    password_confirmation: '123456',
+    admin: true
+})
+user8 = User.create!({
+    email: 'kiril.kleinerman@codeboxx.biz',
+    password: '123456',
+    password_confirmation: '123456',
+    admin: true
+})
+user9 = User.create!({
+    email: 'emmanuela.derilus@codeboxx.biz',
+    password: '123456',
+    password_confirmation: '123456',
+    admin: true
+})
+user10 = User.create!({
+    email: 'marie-eve.goupil@codeboxx.biz',
+    password: '123456',
+    password_confirmation: '123456',
+    admin: true
+})
+user11 = User.create!({
+    email: 'perry.sawatsky@codeboxx.biz',
+    password: '123456',
+    password_confirmation: '123456',
+    admin: true
+})
+Employee.create!([{
+    users_id: user1.id,
+    first_name: "Mathieu",
+    last_name: "Houde",
+    title: "Captain",
+    email: "mathieu.houde@codeboxx.biz"
+  },
+  {
+    users_id: user2.id,
+    first_name: "Patrick",
+    last_name: "Thibault",
+    title: "Engineer",
+    email: "patrick.thibault@codeboxx.biz"
+  },
+  {
+    users_id: user3.id,
+    first_name: "Francis",
+    last_name: "Patry-Jessop",
+    title: "Engineer",
+    email: "francis.patry-jessop@codeboxx.biz"
+  },
+  {
+    users_id: user4.id,
+    first_name: "Abdul",
+    last_name: "Akeeb",
+    title: "Engineer",
+    email: "abdul.akeeb@codebozz.biz"
+  },
+  {
+    users_id: user5.id,
+    first_name: "David",
+    last_name: "Amyot",
+    title: "Engineer",
+    email: "david.amyot@codeboxx.biz"
+  },
+  {
+    users_id: user6.id,
+    first_name: "Thomas",
+    last_name: "Carrier",
+    title: "Developer",
+    email: "thomas.carrier@codeboxx.biz"
+  },
+  {
+    users_id: user7.id,
+    first_name: "Timothy",
+    last_name: "Wever",
+    title: "Developer",
+    email: "timothy.wever@codeboxx.biz"
+  },
+  {
+    users_id: user8.id,
+    first_name: "Kiril",
+    last_name: "Kleinerman",
+    title: "Developer",
+    email: "kiril.kleinerman@codeboxx.biz"
+  },
+  {
+    users_id: user9.id,
+    first_name: "Emmanuela",
+    last_name: "Derilus",
+    title: "Developer",
+    email: "emmanuela.derilus@codeboxx.biz"
+  },
+  {
+    users_id: user10.id,
+    first_name: "Marie-Ève",
+    last_name: "Goupil",
+    title: "Developer",
+    email: "marie-eve.goupil@codeboxx.biz"
+  },
+  {
+    users_id: user11.id,
+    first_name: "Perry",
+    last_name: "Sawatsky",
+    title: "Developer",
+    email: "perry.sawatsky@codeboxx.biz"
+  }])
+ 
+
+
+  20.times do |i|
+    
+    apartments = rand(10..40)
+    floors = rand(5..50)
+    basements = rand(1..5)
+
+    averageDoorsPerFloor = apartments / floors
+    elevatorShafts = averageDoorsPerFloor / 6
+    if elevatorShafts < 1
+      elevatorShafts = 1
+    end
+
+    columns = 0
+    unitPrice = 7565
+      
+    if floors > 20
+      columns = ((floors+basements) / 20).ceil + 1
+    else
+      columns = 1
+    end
+  
+      
+    elevatorCount = (elevatorShafts * columns).ceil
+    totalPriceOfElev = elevatorCount * unitPrice
+    installFees = totalPriceOfElev * 0.1
+    finalPrice = totalPriceOfElev + installFees
+
+    quotes = Quote.create!({
+      building_type:'Residential', 
+      product_line:'Standard',
+      no_of_apartments: apartments,
+      no_of_floors: floors,
+      no_of_basements: basements,
+      created_at:Faker::Date.backward(days: 2000),
+      updated_at:Faker::Date.backward(days: 1000),
+      no_of_elevators_needed: elevatorCount,
+      unit_price:7565,
+      total_price_of_elevators: totalPriceOfElev,
+      installation_fees: installFees,
+      final_price: finalPrice,
+      companyName:Faker::Company.unique.name,
+      email:Faker::Internet.email
+    })
+
+    # puts quotes
+  end
+
+    20.times do |i|
+    
+      apartments = rand(10..40)
+      floors = rand(5..50)
+      basements = rand(1..5)
+  
+      averageDoorsPerFloor = apartments / floors
+      elevatorShafts = averageDoorsPerFloor / 6
+      if elevatorShafts < 1
+        elevatorShafts = 1
+      end
+  
+      columns = 0
+      unitPrice = 12345
+        
+      if floors > 20
+        columns = ((floors+basements) / 20).ceil + 1
+      else
+        columns = 1
+      end
+    
+        
+      elevatorCount = (elevatorShafts * columns).ceil
+      totalPriceOfElev = elevatorCount * unitPrice
+      installFees = totalPriceOfElev * 0.13
+      finalPrice = totalPriceOfElev + installFees
+
+  
+      quotes = Quote.create!({
+        building_type:'Residential', 
+        product_line:'Premium',
+        no_of_apartments: apartments,
+        no_of_floors: floors,
+        no_of_basements: basements,
+        created_at:Faker::Date.backward(days: 2000),
+        updated_at:Faker::Date.backward(days: 1000),
+        no_of_elevators_needed: elevatorCount,
+        unit_price:7565,
+        total_price_of_elevators: totalPriceOfElev,
+        installation_fees: installFees,
+        final_price: finalPrice,
+        companyName:Faker::Company.unique.name,
+        email:Faker::Internet.email
+      })
+    end
+
+  20.times do |i|
+
+    apartments = rand(10..40)
+    floors = rand(5..50)
+    basements = rand(1..5)
+
+    averageDoorsPerFloor = apartments / floors
+    elevatorShafts = averageDoorsPerFloor / 6
+    if elevatorShafts < 1
+      elevatorShafts = 1
+    end
+
+    columns = 0
+    unitPrice = 15400
+      
+    if floors > 20
+      columns = ((floors+basements) / 20).ceil + 1
+    else
+      columns = 1
+    end
+  
+      
+    elevatorCount = (elevatorShafts * columns).ceil
+    totalPriceOfElev = elevatorCount * unitPrice
+    installFees = totalPriceOfElev * 0.16
+    finalPrice = totalPriceOfElev + installFees
+
+    quotes = Quote.create!({
+      building_type:'Residential', 
+      product_line:'Excelium',
+      no_of_apartments: apartments,
+      no_of_floors: floors,
+      no_of_basements: basements,
+      created_at:Faker::Date.backward(days: 2000),
+      updated_at:Faker::Date.backward(days: 1000),
+      no_of_elevators_needed: elevatorCount,
+      unit_price:7565,
+      total_price_of_elevators: totalPriceOfElev,
+      installation_fees: installFees,
+      final_price: finalPrice,
+      companyName:Faker::Company.unique.name,
+      email:Faker::Internet.email
+    })
+  end
+
+  ##############Commercial##################
+  20.times do |i|
+      
+    unitPrice = 7565
+    elevatorCount = rand(1..10)
+    totalPriceOfElev = elevatorCount * unitPrice
+    installFees = totalPriceOfElev * 0.1
+    finalPrice = totalPriceOfElev + installFees
+
+    quotes = Quote.create!({
+      building_type:'Commercial', 
+      product_line:'Standard',
+      no_of_floors: rand(5..50),
+      no_of_basements: rand(2..10),
+      no_of_businesses: rand(30..100),
+      no_of_parking_spaces: rand(20..200),
+      no_of_elevator_cages: elevatorCount,
+      created_at:Faker::Date.backward(days: 2000),
+      updated_at:Faker::Date.backward(days: 1000),
+      no_of_elevators_needed: elevatorCount,
+      unit_price:7565,
+      total_price_of_elevators: totalPriceOfElev,
+      installation_fees: installFees,
+      final_price: finalPrice,
+      companyName:Faker::Company.unique.name,
+      email:Faker::Internet.email
+    })
+
+    # puts quotes
+    end
+
+    20.times do |i|
+
+      unitPrice = 12345
+      elevatorCount = rand(1..10)
+      totalPriceOfElev = elevatorCount * unitPrice
+      installFees = totalPriceOfElev * 0.13
+      finalPrice = totalPriceOfElev + installFees
+  
+      quotes = Quote.create!({
+        building_type:'Commercial', 
+        product_line:'Premium',
+        no_of_floors: rand(5..50),
+        no_of_basements: rand(2..10),
+        no_of_businesses: rand(30..100),
+        no_of_parking_spaces: rand(20..200),
+        no_of_elevator_cages: elevatorCount,
+        created_at:Faker::Date.backward(days: 2000),
+        updated_at:Faker::Date.backward(days: 1000),
+        no_of_elevators_needed: elevatorCount,
+        unit_price:7565,
+        total_price_of_elevators: totalPriceOfElev,
+        installation_fees: installFees,
+        final_price: finalPrice,
+        companyName:Faker::Company.unique.name,
+        email:Faker::Internet.email
+      })
+    end
+
+  20.times do |i|
+
+    unitPrice = 15400
+    elevatorCount = rand(1..10)
+    totalPriceOfElev = elevatorCount * unitPrice
+    installFees = totalPriceOfElev * 0.16
+    finalPrice = totalPriceOfElev + installFees
+
+    quotes = Quote.create!({
+      building_type:'Commercial', 
+      product_line:'Excelium',
+      no_of_floors: rand(5..50),
+      no_of_basements: rand(2..10),
+      no_of_businesses: rand(30..100),
+      no_of_parking_spaces: rand(20..200),
+      no_of_elevator_cages: elevatorCount,
+      created_at:Faker::Date.backward(days: 2000),
+      updated_at:Faker::Date.backward(days: 1000),
+      no_of_elevators_needed: elevatorCount,
+      unit_price:7565,
+      total_price_of_elevators: totalPriceOfElev,
+      installation_fees: installFees,
+      final_price: finalPrice,
+      companyName:Faker::Company.unique.name,
+      email:Faker::Internet.email
+    })
+  end
+  ##############Corporate Or Hybrid##################
+  # 20.times do |i|
+  #   floor = rand(5..80)
+  #   base = rand(1..10)
+  #   maxOccupant = rand(20..50)
+
+  #   columns = ((floor + base) / 20).ceil
+  #   totalOccupant = ((floor + base) * maxOccupant).ceil
+  #   elevatorRequired = (totalOccupant / 1000).ceil
+  #   if columns < 1
+  #     columns = 1
+  #   end
+  #   elevatorPerColumn = (elevatorRequired / columns).ceil
+  #   if elevatorRequired < 1
+  #     elevatorRequired = 1
+  #   end
+  #   elevatorCount = (columns * elevatorPerColumn).ceil + 1
+
+  #   puts ########
+  #   puts floor
+  #   puts base
+  #   puts maxOccupant
+  #   puts elevatorCount
+
+      
+  #   unitPrice = 7565
+  #   totalPriceOfElev = elevatorCount * unitPrice
+  #   installFees = totalPriceOfElev * 0.1
+  #   finalPrice = totalPriceOfElev + installFees
+
+  #   # quotes = Quote.create!({
+  #   #   building_type:['Corporate', 'Hybrid'].sample,
+  #   #   product_line:'Standard',
+  #   #   no_of_floors: floor,
+  #   #   no_of_basements: base,
+  #   #   no_of_businesses: rand(30..100),
+  #   #   no_of_parking_spaces: rand(20..200),
+  #   #   max_of_occupants_per_floor: maxOccupant,
+  #   #   created_at:Faker::Date.backward(days: 2000),
+  #   #   updated_at:Faker::Date.backward(days: 1000),
+  #   #   no_of_elevators_needed: elevatorCount,
+  #   #   unit_price:7565,
+  #   #   total_price_of_elevators: totalPriceOfElev,
+  #   #   installation_fees: installFees,
+  #   #   final_price: finalPrice,
+  #   #   companyName:Faker::Company.unique.name,
+  #   #   email:Faker::Internet.email
+  #   # })
+
+  #   # puts quotes
+  #   end
+
+  #   20.times do |i|
+
+  #   floor = rand(5..80)
+  #   base = rand(1..10)
+  #   maxOccupant = rand(20..50)
+
+  #   columns = ((floor + base) / 20).ceil
+  #   totalOccupant = ((floor + base) * maxOccupant).ceil
+  #   elevatorRequired = (totalOccupant / 1000).ceil
+  #   if columns < 1
+  #     columns = 1
+  #   end
+  #   elevatorPerColumn = (elevatorRequired / columns).ceil
+  #   elevatorCount = (columns * elevatorPerColumn).ceil
+
+      
+  #   unitPrice = 12345
+  #   totalPriceOfElev = elevatorCount * unitPrice
+  #   installFees = totalPriceOfElev * 0.13
+  #   finalPrice = totalPriceOfElev + installFees
+
+  #   quotes = Quote.create!({
+  #     building_type:['Corporate', 'Hybrid'].sample, 
+  #     product_line:'Premium',
+  #     no_of_floors: floor,
+  #     no_of_basements: base,
+  #     no_of_businesses: rand(30..100),
+  #     no_of_parking_spaces: rand(20..200),
+  #     max_of_occupants_per_floor: maxOccupant,
+  #     created_at:Faker::Date.backward(days: 2000),
+  #     updated_at:Faker::Date.backward(days: 1000),
+  #     no_of_elevators_needed: elevatorCount,
+  #     unit_price:7565,
+  #     total_price_of_elevators: totalPriceOfElev,
+  #     installation_fees: installFees,
+  #     final_price: finalPrice,
+  #     companyName:Faker::Company.unique.name,
+  #     email:Faker::Internet.email
+  #     })
+  #   end
+
+  # 20.times do |i|
+
+  #   floor = rand(5..80)
+  #   base = rand(1..10)
+  #   maxOccupant = rand(20..50)
+
+  #   columns = ((floor + base) / 20).ceil
+  #   totalOccupant = ((floor + base) * maxOccupant).ceil
+  #   elevatorRequired = (totalOccupant / 1000).ceil
+  #   if columns < 1
+  #     columns = 1
+  #   end
+  #   elevatorPerColumn = (elevatorRequired / columns).ceil
+  #   elevatorCount = (columns * elevatorPerColumn).ceil
+
+      
+  #   unitPrice = 15400
+  #   totalPriceOfElev = elevatorCount * unitPrice
+  #   installFees = totalPriceOfElev * 0.16
+  #   finalPrice = totalPriceOfElev + installFees
+
+  #   quotes = Quote.create!({
+  #     building_type:['Corporate', 'Hybrid'].sample, 
+  #     product_line:'Excelium',
+  #     no_of_floors: floor,
+  #     no_of_basements: base,
+  #     no_of_businesses: rand(30..100),
+  #     no_of_parking_spaces: rand(20..200),
+  #     max_of_occupants_per_floor: maxOccupant,
+  #     created_at:Faker::Date.backward(days: 2000),
+  #     updated_at:Faker::Date.backward(days: 1000),
+  #     no_of_elevators_needed: elevatorCount,
+  #     unit_price:7565,
+  #     total_price_of_elevators: totalPriceOfElev,
+  #     installation_fees: installFees,
+  #     final_price: finalPrice,
+  #     companyName:Faker::Company.unique.name,
+  #     email:Faker::Internet.email
+  #   })
+  # end
+  
+  
+
+  quote1 = Quote.create!({
+
+    building_type:'Residential', 
+    product_line:'Standard',
+    no_of_apartments: 45,
+    no_of_floors: 50,
+    no_of_basements:5,
+    created_at:Faker::Date.backward(days: 2000),
+    updated_at:Faker::Date.backward(days: 1000),
+    no_of_elevators_needed:26,
+    unit_price:7565,
+    total_price_of_elevators:196690,
+    installation_fees:19669,
+    final_price:216359,
+    companyName:Faker::Company.unique.name,
+    email:Faker::Internet.email
+  
+  })
+
+quote2 = Quote.create!({
+building_type:'Residential', 
+product_line:'Standard',
+no_of_apartments: 20,
+no_of_floors: 30,
+no_of_basements:2,
+created_at:Faker::Date.backward(days: 2000),
+updated_at:Faker::Date.backward(days: 1000),
+no_of_elevators_needed:16,
+unit_price:7565,
+total_price_of_elevators:121040,
+installation_fees:12104,
+final_price:133144,
+companyName:Faker::Company.unique.name,
+email:Faker::Internet.email
+
+})
+
+quote3 = Quote.create!({
+
+building_type:'Residential', 
+product_line:'Standard',
+no_of_apartments: 100,
+no_of_floors: 70,
+no_of_basements:10,
+created_at:Faker::Date.backward(days: 2000),
+updated_at:Faker::Date.backward(days: 1000),
+no_of_elevators_needed:351,
+unit_price:7565,
+total_price_of_elevators:2655315,
+installation_fees:265531,
+final_price:2920846,
+companyName:Faker::Company.unique.name,
+email:Faker::Internet.email
+
+})
+
+quote4 = Quote.create!({
+
+building_type:'Residential', 
+product_line:'Standard',
+no_of_apartments: 60,
+no_of_floors: 50,
+no_of_basements:6,
+created_at:Faker::Date.backward(days: 2000),
+updated_at:Faker::Date.backward(days: 1000),
+no_of_elevators_needed:26,
+unit_price:7565,
+total_price_of_elevators:196690,
+installation_fees:19669,
+final_price:216359,
+companyName:Faker::Company.unique.name,
+email:Faker::Internet.email
+
+})
+quote5 = Quote.create!({
+
+building_type:'Residential', 
+product_line:'Standard',
+no_of_apartments: 20,
+no_of_floors: 8,
+no_of_basements:2,
+created_at:Faker::Date.backward(days: 2000),
+updated_at:Faker::Date.backward(days: 1000),
+no_of_elevators_needed:1,
+unit_price:7565,
+total_price_of_elevators:7565,
+installation_fees:756,
+final_price:8321,
+companyName:Faker::Company.unique.name,
+email:Faker::Internet.email
+
+})
+quote6 = Quote.create!({
+
+building_type:'Residential', 
+product_line:'Premium',
+no_of_apartments: 28,
+no_of_floors: 16,
+no_of_basements:3,
+created_at:Faker::Date.backward(days: 2000),
+updated_at:Faker::Date.backward(days: 1000),
+no_of_elevators_needed:1,
+unit_price:12345,
+total_price_of_elevators:12345,
+installation_fees:1604,
+final_price:13949,
+companyName:Faker::Company.unique.name,
+email:Faker::Internet.email
+
+})
+
+quote7 = Quote.create!({
+
+building_type:'Commercial', 
+product_line:'Premium',
+no_of_floors: 80,
+no_of_basements:62,
+no_of_businesses:30,
+no_of_parking_spaces:100,
+no_of_elevator_cages:10,
+created_at:Faker::Date.backward(days: 2000),
+updated_at:Faker::Date.backward(days: 1000),
+no_of_elevators_needed:10,
+unit_price:12345,
+total_price_of_elevators:123450,
+installation_fees:16048,
+final_price:139498,
+companyName:Faker::Company.unique.name,
+email:Faker::Internet.email
+
+})
+
+quote8 = Quote.create!({
+
+building_type:'Commercial', 
+product_line:'Premium',
+no_of_floors: 50,
+no_of_basements:10,
+no_of_businesses:3,
+no_of_parking_spaces:40,
+no_of_elevator_cages:8,
+created_at:Faker::Date.backward(days: 2000),
+updated_at:Faker::Date.backward(days: 1000),
+no_of_elevators_needed:8,
+unit_price:12345,
+total_price_of_elevators:98760,
+installation_fees:12838,
+final_price:111598,
+companyName:Faker::Company.unique.name,
+email:Faker::Internet.email
+
+})
+
+quote9 = Quote.create!({
+
+  building_type:'Commercial', 
+  product_line:'Standard',
+  no_of_floors: 60,
+  no_of_basements:1,
+  no_of_businesses:30,
+  no_of_parking_spaces:200,
+  no_of_elevator_cages:10,
+  created_at:Faker::Date.backward(days: 2000),
+  updated_at:Faker::Date.backward(days: 1000),
+  no_of_elevators_needed:18,
+  unit_price:7565,
+  total_price_of_elevators:75650,
+  installation_fees:7565,
+  final_price:83215,
+  companyName:Faker::Company.unique.name,
+  email:Faker::Internet.email
+
+  })
+
+  quote10 = Quote.create!({
+
+    building_type:'Commercial', 
+    product_line:'Standard',
+    no_of_floors: 60,
+    no_of_basements:10,
+    no_of_businesses:60,
+    no_of_parking_spaces:300,
+    no_of_elevator_cages:16,
+    max_of_occupants_per_floor:100,
+    no_of_hours_of_activities:12,
+    created_at:Faker::Date.backward(days: 2000),
+    updated_at:Faker::Date.backward(days: 1000),
+    no_of_elevators_needed:602,
+    unit_price:7565,
+    total_price_of_elevators:4554130,
+    installation_fees:455413,
+    final_price:5000943,
+    companyName:Faker::Company.unique.name,
+    email:Faker::Internet.email
+  
+    })
+
+
+  p "Created #{Employee.count} employee and #{User.count} users."
+
+        quote4 = Quote.create!({
+          building_type:'Residential',
+          product_line:'Standard',
+          no_of_apartments: 60,
+          no_of_floors: 50,
+          no_of_basements:6,
+          created_at:Faker::Date.backward(days: 5000),
+          updated_at:Faker::Date.backward(days: 1000),
+          no_of_elevators_needed:26,
+          unit_price:7565,
+          total_price_of_elevators:196690,
+          installation_fees:19669,
+          final_price:216359,
+          companyName:Faker::Company.unique.name,
+          email:Faker::Internet.email
+          })
+          quote5 = Quote.create!({
+            building_type:'Residential',
+            product_line:'Standard',
+            no_of_apartments: 20,
+            no_of_floors: 8,
+            no_of_basements:2,
+            created_at:Faker::Date.backward(days: 5000),
+            updated_at:Faker::Date.backward(days: 1000),
+            no_of_elevators_needed:1,
+            unit_price:7565,
+            total_price_of_elevators:7565,
+            installation_fees:756,
+            final_price:8321,
+            companyName:Faker::Company.unique.name,
+            email:Faker::Internet.email
+            })
+           quote6 = Quote.create!({
+             building_type:'Residential',
+             product_line:'Premium',
+             no_of_apartments: 28,
+             no_of_floors: 16,
+             no_of_basements:3,
+             created_at:Faker::Date.backward(days: 5000),
+             updated_at:Faker::Date.backward(days: 1000),
+             no_of_elevators_needed:1,
+             unit_price:12345,
+             total_price_of_elevators:12345,
+             installation_fees:1604,
+             final_price:13949,
+             companyName:Faker::Company.unique.name,
+             email:Faker::Internet.email
+             })
+             quote7 = Quote.create!({
+              building_type:'Commercial',
+              product_line:'Premium',
+              no_of_floors: 80,
+              no_of_basements:62,
+              no_of_businesses:30,
+              no_of_parking_spaces:100,
+              no_of_elevator_cages:10,
+              created_at:Faker::Date.backward(days: 5000),
+              updated_at:Faker::Date.backward(days: 1000),
+              no_of_elevators_needed:10,
+              unit_price:12345,
+              total_price_of_elevators:123450,
+              installation_fees:16048,
+              final_price:139498,
+              companyName:Faker::Company.unique.name,
+              email:Faker::Internet.email
+              })
+              quote8 = Quote.create!({
+                building_type:'Commercial',
+                product_line:'Premium',
+                no_of_floors: 50,
+                no_of_basements:10,
+                no_of_businesses:3,
+                no_of_parking_spaces:40,
+                no_of_elevator_cages:8,
+                created_at:Faker::Date.backward(days: 5000),
+                updated_at:Faker::Date.backward(days: 1000),
+                no_of_elevators_needed:8,
+                unit_price:12345,
+                total_price_of_elevators:98760,
+                installation_fees:12838,
+                final_price:111598,
+                companyName:Faker::Company.unique.name,
+                email:Faker::Internet.email
+                })
+                quote9 = Quote.create!({
+                  building_type:'Commercial',
+                  product_line:'Standard',
+                  no_of_floors: 60,
+                  no_of_basements:1,
+                  no_of_businesses:30,
+                  no_of_parking_spaces:200,
+                  no_of_elevator_cages:10,
+                  created_at:Faker::Date.backward(days: 5000),
+                  updated_at:Faker::Date.backward(days: 1000),
+                  no_of_elevators_needed:18,
+                  unit_price:7565,
+                  total_price_of_elevators:75650,
+                  installation_fees:7565,
+                  final_price:83215,
+                  companyName:Faker::Company.unique.name,
+                  email:Faker::Internet.email
+                  })
+                  quote10 = Quote.create!({
+                    building_type:'Commercial',
+                    product_line:'Standard',
+                    no_of_floors: 60,
+                    no_of_basements:10,
+                    no_of_businesses:60,
+                    no_of_parking_spaces:300,
+                    no_of_elevator_cages:16,
+                    max_of_occupants_per_floor:100,
+                    no_of_hours_of_activities:12,
+                    created_at:Faker::Date.backward(days: 5000),
+                    updated_at:Faker::Date.backward(days: 1000),
+                    no_of_elevators_needed:602,
+                    unit_price:7565,
+                    total_price_of_elevators:4554130,
+                    installation_fees:455413,
+                    final_price:5000943,
+                    companyName:Faker::Company.unique.name,
+                    email:Faker::Internet.email
+                    })
+  p "Created #{Employee.count} employee and #{User.count} users and #{Quote.count}  quotes."
+   require "faker"
+  100.times do |i|
+    path = File.join(File.dirname(__FILE__),"./seeds/addresses-us-500.json")
+    records = JSON.parse(File.read(path))
+    adress2 = records["addresses"][i + 100]
+    users = User.create!({
+      email: Faker::Internet.unique.email,
+      password: '123456',
+      password_confirmation: '123456',
+      admin: false
+   })
+    users.save
+    customers = Customer.create!({
+      Customers_Creation_Date:Faker::Date.backward(days: 1000),
+      Company_Name:Faker::Company.unique.name,
+      Company_headquarters_adress: adress2["address1"],
+      city: adress2["city"],
+      Full_Name_of_the_company_contact:Faker::Name.unique.name,
+      Company_contact_phone:Faker::PhoneNumber.unique.cell_phone,
+      Email_of_the_company_contact:Faker::Internet.unique.email,
+      Company_Description:Faker::Company.unique.catch_phrase,
+      Full_Name_of_servive_Technical_Authority:Faker::Name.unique.name,
+      Technical_Manager_Email_for_Servive:Faker::Internet.unique.email,
+      users_id: users.id
+    })
+    customers.save
+
+    adress = records["addresses"][i]
+    
+  adresses = Adress.create!({
+  type_of_adress: ['Residential', 'Commercial','Corporate'].sample,
+  status: ['online','offline'].sample,
+  entity: ["House","Office","PObox","Gouvernement"].sample,
+  number_and_street: adress["address1"],
+  suite_or_appartment: ['suite','appartment'].sample,
+  city: adress["city"],
+  postal_code: adress["postalCode"],
+  country: "United States",
+  notes: Faker::Company.buzzword,
+  customers_id:customers.id,
+  })
+  adresses.save
+    building = Building.create!({
+    customers_id:customers.id,
+    adresses_id:adresses.id,
+    Adress_of_the_building: adress["address1"],
+    Full_Name_of_the_building_administrator:Faker::Name.unique.name,
+    Email_of_the_administrator_of_the_building:Faker::Internet.email,
+    Phone_number_of_the_building_administrator:Faker::PhoneNumber.unique.cell_phone,
+    Full_Name_of_the_technical_contact_for_the_building:Faker::Name.unique.name,
+    Technical_contact_email_for_the_building:Faker::Internet.unique.email,
+    Technical_contact_phone_for_the_building:Faker::PhoneNumber.unique.cell_phone
+    })
+    building.save
+      details = Detailsbuilding.create!({
+      information_key:Faker::Company.buzzword,
+      value:Faker::Company.buzzword,
+      buildings_id: building.id
+    })
+    details.save
+    batteries = Battery.create!({
+      buildings_id: building.id ,
+      status:['online','offline'].sample,
+      employeeId: rand(1...11),
+      date_of_commissioning:Faker::Date.backward(days: 1000),
+      date_of_last_inspection:Faker::Date.backward(days: 900),
+      certificate_of_operations:'Inspected',
+      information:Faker::Lorem.paragraph(sentence_count: 2, supplemental: true, random_sentences_to_add: 4),
+      notes:Faker::Lorem.paragraph(sentence_count: 2, supplemental: true, random_sentences_to_add: 4),
+    })
+     batteries.save
+    columns = Column.create!({
+      batteries_id:batteries.id,
+      set_type:['Residential','Commercial','Corporate'].sample,
+      nb_of_floors_served:Faker::Number.between(from: 8, to: 120),
+      status:['online','offline'].sample,
+       information: batteries.information,
+       notes: batteries.information
+    })
+    columns.save
+       nbElevator = Faker::Number.between(from: 1, to: 40)
+      nbElevator.times do
+      elevators = Elevator.create!({
+      columns_id: columns.id ,
+      Serial_number:Faker::Number.between(from: 1, to: 5000),
+      Model:['Standard','Premium','Excelium'].sample,
+      Type:['Residential', 'Commercial','Corporate'].sample,
+      Status:['online','offline'].sample,
+      Date_of_commissioning:batteries.date_of_commissioning,
+      Date_of_last_inspection: batteries.date_of_last_inspection,
+      Certificate_of_inspection:'Inspected',
+      Information:batteries.information,
+      Notes: batteries.notes
+    })
+     elevators.save
+     end
+    leads = Lead.create!({
+      full_name:Faker::Name.unique.name,
+      cie_name:Faker::Company.unique.name,
+      email:Faker::Internet.email,
+      phone:Faker::PhoneNumber.unique.cell_phone,
+      created_at:Faker::Date.backward(days: 2000),
+      updated_at:Faker::Date.backward(days: 1000),
+      project_name:Faker::Company.unique.name,
+      project_description:Faker::Company.industry,
+      department_in_charge:Faker::Company.industry,
+      message:Faker::Lorem.paragraph(sentence_count: 2, supplemental: true, random_sentences_to_add: 4),
+    })
+    leads.save
+   end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
