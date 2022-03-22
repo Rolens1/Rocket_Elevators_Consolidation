@@ -7,6 +7,10 @@
 <p>
 
 <p id="notice" onload="showRelevantBuildingType()"><%= notice %></p>
+<p>
+  <strong>Full Name:</strong>
+  <div><%= @quote.fullName%></div>
+</p>
 
 <p>
   <strong>Company Name:</strong>
@@ -16,6 +20,31 @@
 <p>
   <strong>Email:</strong>
   <div><%= @quote.email%></div>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  <div><%= @quote.phone%></div>
+</p>
+
+<p>
+  <strong>Department:</strong>
+  <div><%= @quote.department%></div>
+</p>
+
+<p>
+  <strong>Project Name:</strong>
+  <div><%= @quote.projectName%></div>
+</p>
+
+<p>
+  <strong>Project Description:</strong>
+  <div><%= @quote.projectDesc%></div>
+</p>
+
+<p>
+  <strong>Message:</strong>
+  <div><%= @quote.message%></div>
 </p>
 
 <p>

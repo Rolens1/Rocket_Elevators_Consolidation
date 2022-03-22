@@ -21,6 +21,12 @@ gem 'font-awesome-rails'
 gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
 gem 'chartkick'
 gem 'groupdate'
+#gem 'freshdesk'
+gem 'freshdesk-api-v2-rails'
+#gem 'figaro'
+gem 'uri'
+gem 'net-http'
+gem 'httparty'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
