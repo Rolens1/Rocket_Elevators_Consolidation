@@ -34,13 +34,43 @@
   <div id="input_form">
 
   <div class="field">
+    <%= form.label :fullName, "Full Name"%>
+    <%= form.text_field :fullName %>
+  </div>
+
+  <div class="field">
     <%= form.label :companyName, "Company Name"%>
     <%= form.text_field :companyName %>
   </div>
 
    <div class="field">
-    <%= form.label :email %>
+    <%= form.label :email, "Email" %>
     <%= form.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :phone, "Phone Number"%>
+    <%= form.text_field :phone %>
+  </div>
+
+  <div class="field">
+    <%= form.label :department, "Department"%>
+    <%= form.text_field :department %>
+  </div>
+
+  <div class="field">
+    <%= form.label :projectName, "Project Name"%>
+    <%= form.text_field :projectName %>
+  </div>
+
+  <div class="field">
+    <%= form.label :projectDesc, "Project Description"%>
+    <%= form.text_field :projectDesc %>
+  </div>
+
+  <div class="field">
+    <%= form.label :message, "Message"%>
+    <%= form.text_field :message %>
   </div>
 
   <div class="field" id="no_of_apartments" onchange="detectInput()" hidden>

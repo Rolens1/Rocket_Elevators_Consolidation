@@ -6,7 +6,11 @@
 <section class="alternate">
 <div class="quote-page">
 <p id="notice" onload="showRelevantBuildingType()"><%= notice %></p>
-
+<p>
+<div>
+  <strong>Full Name:</strong>
+  <%= @quote.fullName%></div>
+</p>
 <p>
  <div>
  <strong>Company Name:</strong>
@@ -17,6 +21,31 @@
   <div>
   <strong>Email:</strong>
   <%= @quote.email%></div>
+</p>
+
+<p><div>
+  <strong>Phone:</strong>
+  <%= @quote.phone%></div>
+</p>
+
+<p><div>
+  <strong>Department:</strong>
+  <%= @quote.department%></div>
+</p>
+
+<p><div>
+  <strong>Project Name:</strong>
+  <%= @quote.projectName%></div>
+</p>
+
+<p><div>
+  <strong>Project Description:</strong>
+  <%= @quote.projectDesc%></div>
+</p>
+
+<p><div>
+  <strong>Message:</strong>
+  <%= @quote.message%></div>
 </p>
 
 <p>

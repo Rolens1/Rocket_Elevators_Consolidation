@@ -32,9 +32,15 @@ yarn-debug.log*
 .yarn-integrity
 
 #ignore schema.rb
-db/schema.rb
-config/database.yml
+/db/schema.rb
+/config/database.yml
+/config/postgres_database.yml
+/postgres_db/schema.rb
+config/postgres_database.yml
 
 
 #vscode
 /.vscode
+
+#env variables
+/config/local_env.yml
