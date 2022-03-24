@@ -1,5 +1,3 @@
 class Detailsbuilding < ApplicationRecord
-    belongs_to :building, optional: true
-    has_one :building
-    has_one :customer
+    belongs_to :building
 end
