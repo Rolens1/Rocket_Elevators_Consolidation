@@ -6,11 +6,11 @@ class TwilioTextMessenger
     end
   
     def call
-      client = Twilio::REST::Client.new
+      client = Twilio::REST::Client.new(ENV['TWILIO_SID'], ENV['TWILIO_KEY'])
       client.messages.create({
         from: '+17069898933',
         to: '+15146862467',
-        body: '#{Elevator.ID} is defective. Please go check out on the elevator as soon as possible. Have a good day!'
+        body: message
       })
     end
   end
