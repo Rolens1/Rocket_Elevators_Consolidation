@@ -81,77 +81,77 @@ user11 = User.create!({
     admin: true
 })
 Employee.create!([{
-    users_id: user1.id,
+    user_id: user1.id,
     first_name: "Mathieu",
     last_name: "Houde",
     title: "Captain",
     email: "mathieu.houde@codeboxx.biz"
   },
   {
-    users_id: user2.id,
+    user_id: user2.id,
     first_name: "Patrick",
     last_name: "Thibault",
     title: "Engineer",
     email: "patrick.thibault@codeboxx.biz"
   },
   {
-    users_id: user3.id,
+    user_id: user3.id,
     first_name: "Francis",
     last_name: "Patry-Jessop",
     title: "Engineer",
     email: "francis.patry-jessop@codeboxx.biz"
   },
   {
-    users_id: user4.id,
+    user_id: user4.id,
     first_name: "Abdul",
     last_name: "Akeeb",
     title: "Engineer",
     email: "abdul.akeeb@codebozz.biz"
   },
   {
-    users_id: user5.id,
+    user_id: user5.id,
     first_name: "David",
     last_name: "Amyot",
     title: "Engineer",
     email: "david.amyot@codeboxx.biz"
   },
   {
-    users_id: user6.id,
+    user_id: user6.id,
     first_name: "Thomas",
     last_name: "Carrier",
     title: "Developer",
     email: "thomas.carrier@codeboxx.biz"
   },
   {
-    users_id: user7.id,
+    user_id: user7.id,
     first_name: "Timothy",
     last_name: "Wever",
     title: "Developer",
     email: "timothy.wever@codeboxx.biz"
   },
   {
-    users_id: user8.id,
+    user_id: user8.id,
     first_name: "Kiril",
     last_name: "Kleinerman",
     title: "Developer",
     email: "kiril.kleinerman@codeboxx.biz"
   },
   {
-    users_id: user9.id,
+    user_id: user9.id,
     first_name: "Emmanuela",
     last_name: "Derilus",
     title: "Developer",
     email: "emmanuela.derilus@codeboxx.biz"
   },
   {
-    users_id: user10.id,
+    user_id: user10.id,
     first_name: "Marie-Ève",
     last_name: "Goupil",
     title: "Developer",
     email: "marie-eve.goupil@codeboxx.biz"
   },
   {
-    users_id: user11.id,
+    user_id: user11.id,
     first_name: "Perry",
     last_name: "Sawatsky",
     title: "Developer",
@@ -384,144 +384,8 @@ Employee.create!([{
       email:Faker::Internet.email
     })
   end
-  ##############Corporate Or Hybrid##################
-  # 20.times do |i|
-  #   floor = rand(5..80)
-  #   base = rand(1..10)
-  #   maxOccupant = rand(20..50)
-
-  #   columns = ((floor + base) / 20).ceil
-  #   totalOccupant = ((floor + base) * maxOccupant).ceil
-  #   elevatorRequired = (totalOccupant / 1000).ceil
-  #   if columns < 1
-  #     columns = 1
-  #   end
-  #   elevatorPerColumn = (elevatorRequired / columns).ceil
-  #   if elevatorRequired < 1
-  #     elevatorRequired = 1
-  #   end
-  #   elevatorCount = (columns * elevatorPerColumn).ceil + 1
-
-  #   puts ########
-  #   puts floor
-  #   puts base
-  #   puts maxOccupant
-  #   puts elevatorCount
-
-      
-  #   unitPrice = 7565
-  #   totalPriceOfElev = elevatorCount * unitPrice
-  #   installFees = totalPriceOfElev * 0.1
-  #   finalPrice = totalPriceOfElev + installFees
-
-  #   # quotes = Quote.create!({
-  #   #   building_type:['Corporate', 'Hybrid'].sample,
-  #   #   product_line:'Standard',
-  #   #   no_of_floors: floor,
-  #   #   no_of_basements: base,
-  #   #   no_of_businesses: rand(30..100),
-  #   #   no_of_parking_spaces: rand(20..200),
-  #   #   max_of_occupants_per_floor: maxOccupant,
-  #   #   created_at:Faker::Date.backward(days: 2000),
-  #   #   updated_at:Faker::Date.backward(days: 1000),
-  #   #   no_of_elevators_needed: elevatorCount,
-  #   #   unit_price:7565,
-  #   #   total_price_of_elevators: totalPriceOfElev,
-  #   #   installation_fees: installFees,
-  #   #   final_price: finalPrice,
-  #   #   companyName:Faker::Company.unique.name,
-  #   #   email:Faker::Internet.email
-  #   # })
-
-  #   # puts quotes
-  #   end
-
-  #   20.times do |i|
-
-  #   floor = rand(5..80)
-  #   base = rand(1..10)
-  #   maxOccupant = rand(20..50)
-
-  #   columns = ((floor + base) / 20).ceil
-  #   totalOccupant = ((floor + base) * maxOccupant).ceil
-  #   elevatorRequired = (totalOccupant / 1000).ceil
-  #   if columns < 1
-  #     columns = 1
-  #   end
-  #   elevatorPerColumn = (elevatorRequired / columns).ceil
-  #   elevatorCount = (columns * elevatorPerColumn).ceil
-
-      
-  #   unitPrice = 12345
-  #   totalPriceOfElev = elevatorCount * unitPrice
-  #   installFees = totalPriceOfElev * 0.13
-  #   finalPrice = totalPriceOfElev + installFees
-
-  #   quotes = Quote.create!({
-  #     building_type:['Corporate', 'Hybrid'].sample, 
-  #     product_line:'Premium',
-  #     no_of_floors: floor,
-  #     no_of_basements: base,
-  #     no_of_businesses: rand(30..100),
-  #     no_of_parking_spaces: rand(20..200),
-  #     max_of_occupants_per_floor: maxOccupant,
-  #     created_at:Faker::Date.backward(days: 2000),
-  #     updated_at:Faker::Date.backward(days: 1000),
-  #     no_of_elevators_needed: elevatorCount,
-  #     unit_price:7565,
-  #     total_price_of_elevators: totalPriceOfElev,
-  #     installation_fees: installFees,
-  #     final_price: finalPrice,
-  #     companyName:Faker::Company.unique.name,
-  #     email:Faker::Internet.email
-  #     })
-  #   end
-
-  # 20.times do |i|
-
-  #   floor = rand(5..80)
-  #   base = rand(1..10)
-  #   maxOccupant = rand(20..50)
-
-  #   columns = ((floor + base) / 20).ceil
-  #   totalOccupant = ((floor + base) * maxOccupant).ceil
-  #   elevatorRequired = (totalOccupant / 1000).ceil
-  #   if columns < 1
-  #     columns = 1
-  #   end
-  #   elevatorPerColumn = (elevatorRequired / columns).ceil
-  #   elevatorCount = (columns * elevatorPerColumn).ceil
-
-      
-  #   unitPrice = 15400
-  #   totalPriceOfElev = elevatorCount * unitPrice
-  #   installFees = totalPriceOfElev * 0.16
-  #   finalPrice = totalPriceOfElev + installFees
-
-  #   quotes = Quote.create!({
-  #     building_type:['Corporate', 'Hybrid'].sample, 
-  #     product_line:'Excelium',
-  #     no_of_floors: floor,
-  #     no_of_basements: base,
-  #     no_of_businesses: rand(30..100),
-  #     no_of_parking_spaces: rand(20..200),
-  #     max_of_occupants_per_floor: maxOccupant,
-  #     created_at:Faker::Date.backward(days: 2000),
-  #     updated_at:Faker::Date.backward(days: 1000),
-  #     no_of_elevators_needed: elevatorCount,
-  #     unit_price:7565,
-  #     total_price_of_elevators: totalPriceOfElev,
-  #     installation_fees: installFees,
-  #     final_price: finalPrice,
-  #     companyName:Faker::Company.unique.name,
-  #     email:Faker::Internet.email
-  #   })
-  # end
   
-  
-
   quote1 = Quote.create!({
-
     building_type:'Residential', 
     product_line:'Standard',
     no_of_apartments: 45,
@@ -844,17 +708,20 @@ quote9 = Quote.create!({
                     })
   p "Created #{Employee.count} employee and #{User.count} users and #{Quote.count}  quotes."
    require "faker"
+
   100.times do |i|
     path = File.join(File.dirname(__FILE__),"./seeds/addresses-us-500.json")
     records = JSON.parse(File.read(path))
     adress2 = records["addresses"][i + 100]
+
     users = User.create!({
       email: Faker::Internet.unique.email,
       password: '123456',
       password_confirmation: '123456',
       admin: false
-   })
+    })
     users.save
+
     customers = Customer.create!({
       Customers_Creation_Date:Faker::Date.backward(days: 1000),
       Company_Name:Faker::Company.unique.name,
@@ -866,45 +733,47 @@ quote9 = Quote.create!({
       Company_Description:Faker::Company.unique.catch_phrase,
       Full_Name_of_servive_Technical_Authority:Faker::Name.unique.name,
       Technical_Manager_Email_for_Servive:Faker::Internet.unique.email,
-      users_id: users.id
+      user_id: users.id
     })
     customers.save
 
     adress = records["addresses"][i]
     
-  adresses = Adress.create!({
-  type_of_adress: ['Residential', 'Commercial','Corporate'].sample,
-  status: ['online','offline'].sample,
-  entity: ["House","Office","PObox","Gouvernement"].sample,
-  number_and_street: adress["address1"],
-  suite_or_appartment: ['suite','appartment'].sample,
-  city: adress["city"],
-  postal_code: adress["postalCode"],
-  country: "United States",
-  notes: Faker::Company.buzzword,
-  customers_id:customers.id,
-  })
-  adresses.save
+    adresses = Adress.create!({
+      type_of_adress: ['Residential', 'Commercial','Corporate'].sample,
+      status: ['online','offline'].sample,
+      entity: ["House","Office","PObox","Gouvernement"].sample,
+      number_and_street: adress["address1"],
+      suite_or_appartment: ['suite','appartment'].sample,
+      city: adress["city"],
+      postal_code: adress["postalCode"],
+      country: "United States",
+      notes: Faker::Company.buzzword
+    })
+    adresses.save
+
     building = Building.create!({
-    customers_id:customers.id,
-    adresses_id:adresses.id,
-    Adress_of_the_building: adress["address1"],
-    Full_Name_of_the_building_administrator:Faker::Name.unique.name,
-    Email_of_the_administrator_of_the_building:Faker::Internet.email,
-    Phone_number_of_the_building_administrator:Faker::PhoneNumber.unique.cell_phone,
-    Full_Name_of_the_technical_contact_for_the_building:Faker::Name.unique.name,
-    Technical_contact_email_for_the_building:Faker::Internet.unique.email,
-    Technical_contact_phone_for_the_building:Faker::PhoneNumber.unique.cell_phone
+      customer_id:customers.id,
+      adress_id:adresses.id,
+      Adress_of_the_building: adress["address1"],
+      Full_Name_of_the_building_administrator:Faker::Name.unique.name,
+      Email_of_the_administrator_of_the_building:Faker::Internet.email,
+      Phone_number_of_the_building_administrator:Faker::PhoneNumber.unique.cell_phone,
+      Full_Name_of_the_technical_contact_for_the_building:Faker::Name.unique.name,
+      Technical_contact_email_for_the_building:Faker::Internet.unique.email,
+      Technical_contact_phone_for_the_building:Faker::PhoneNumber.unique.cell_phone
     })
     building.save
-      details = Detailsbuilding.create!({
+
+    details = Detailsbuilding.create!({
       information_key:Faker::Company.buzzword,
       value:Faker::Company.buzzword,
-      buildings_id: building.id
+      building_id: building.id
     })
     details.save
+    
     batteries = Battery.create!({
-      buildings_id: building.id ,
+      building_id: building.id ,
       status:['online','offline'].sample,
       employeeId: rand(1...11),
       date_of_commissioning:Faker::Date.backward(days: 1000),
@@ -913,9 +782,10 @@ quote9 = Quote.create!({
       information:Faker::Lorem.paragraph(sentence_count: 2, supplemental: true, random_sentences_to_add: 4),
       notes:Faker::Lorem.paragraph(sentence_count: 2, supplemental: true, random_sentences_to_add: 4),
     })
-     batteries.save
+    batteries.save
+    
     columns = Column.create!({
-      batteries_id:batteries.id,
+      battery_id:batteries.id,
       set_type:['Residential','Commercial','Corporate'].sample,
       nb_of_floors_served:Faker::Number.between(from: 8, to: 120),
       status:['online','offline'].sample,
@@ -923,22 +793,24 @@ quote9 = Quote.create!({
        notes: batteries.information
     })
     columns.save
-       nbElevator = Faker::Number.between(from: 1, to: 40)
-      nbElevator.times do
+    
+    n = rand(4) + 1
+    n.times do
       elevators = Elevator.create!({
-      columns_id: columns.id ,
-      Serial_number:Faker::Number.between(from: 1, to: 5000),
-      Model:['Standard','Premium','Excelium'].sample,
-      Type:['Residential', 'Commercial','Corporate'].sample,
-      Status:['online','offline'].sample,
-      Date_of_commissioning:batteries.date_of_commissioning,
-      Date_of_last_inspection: batteries.date_of_last_inspection,
-      Certificate_of_inspection:'Inspected',
-      Information:batteries.information,
-      Notes: batteries.notes
-    })
-     elevators.save
-     end
+        column_id: columns.id,
+        Serial_number:Faker::Number.between(from: 1, to: 5000),
+        Model:['Standard','Premium','Excelium'].sample,
+        Type:['Residential', 'Commercial','Corporate'].sample,
+        Status:['online','offline'].sample,
+        Date_of_commissioning:batteries.date_of_commissioning,
+        Date_of_last_inspection: batteries.date_of_last_inspection,
+        Certificate_of_inspection:'Inspected',
+        Information:batteries.information,
+        Notes: batteries.notes
+      })
+      elevators.save
+  end
+    
     leads = Lead.create!({
       full_name:Faker::Name.unique.name,
       cie_name:Faker::Company.unique.name,
