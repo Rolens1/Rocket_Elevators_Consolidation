@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  post 'twilio/sms'
   resources :quotes
   get 'quotes/quote'
   get 'errors/not_found'

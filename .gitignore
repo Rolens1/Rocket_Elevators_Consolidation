@@ -38,9 +38,17 @@ yarn-debug.log*
 /postgres_db/schema.rb
 config/postgres_database.yml
 
+#Ignore keys
+application.yml
 
 #vscode
 /.vscode
+
+#Ignore postgres database infos
+postgres_database.yml
+
+#infos to connect
+database.yml
 
 #env variables
 /config/local_env.yml
