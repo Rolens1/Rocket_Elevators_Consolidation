@@ -63,16 +63,16 @@ namespace :postgres do
       task fact_elevators: :environment do
         FactElevator.destroy_all
         count = 0
-        Elevator.find_each do |record|
+        Elevator.find_each do |elevator|
           fe = FactElevator.new
-          fe.serialNumber = record.Serial_number
-          fe.dateOfCommissioning = record.Date_of_commissioning
-          column = Column.where(id: record.columns_id)
-          battery = Battery.where(id: column.pluck(:batteries_id))
-          building_id = battery.pluck(:buildings_id).first
-          fe.buildingId = building_id
-          fe.customerId = Building.where(id: building_id).pluck(:customers_id).first
-          fe.buildingCity = Adress.where(id: Building.where(id: building_id).pluck(:adresses_id).first).pluck(:city).first
+          fe.serialNumber = elevator.Serial_number
+          fe.dateOfCommissioning = elevator.Date_of_commissioning
+          building = elevator.column.battery.building
+          adress = Adress.find(building.adress_id)
+          fe.buildingId = building.id
+          fe.customerId = building.customer_id
+          fe.buildingCity = adress.city
+          
           if fe.save
             count = count + 1
           else
@@ -95,18 +95,18 @@ namespace :postgres do
           dc.fullNameOfMainContact = record.Full_Name_of_the_company_contact
           dc.emailOfMainContact = record.Email_of_the_company_contact
           dc.nbElevator = 0 
-          buildings = Building.where(customers_id: record.id)
+          buildings = Building.where(customer_id: record.id)
           buildings.each do |building|
-            batteries = Battery.where(buildings_id: building.id)
+            batteries = Battery.where(building_id: building.id)
             batteries.each do |battery|
-              columns = Column.where(batteries_id: battery.id)
+              columns = Column.where(battery_id: battery.id)
               columns.each do |column|
-                dc.nbElevator = Elevator.where(columns_id: column.id).count
+                dc.nbElevator = Elevator.where(column_id: column.id).count
                 puts dc.nbElevator
               end
             end
           end
-        dc.customerCity = record.city
+        dc.customerCity = record.adress.city
         if dc.save
           count = count + 1
         else
@@ -154,44 +154,3 @@ namespace :postgres do
     Rails.application.config = @original_config[:config]
   end
 end
-
-
-# namespace :postgres_db do
-#     task load_config: :environment do
-#         @postgres_env = "postgres_#{Rails.env}"
-#         @schema_path = File.join(ActiveRecord::Tasks::DatabaseTasks.db_dir, "postgres_schema.rb")
-#     end
-#     #Create and drop database defined below:
-#     desc "Creates the Postgres database from config/postgres_database.yml."
-#     task create: :load_config do
-#         ActiveRecord::Tasks::DatabaseTasks.create_current(@postgres_env)
-#     end 
-#     desc "Drops the Postgres database from config/database.yml for the current RAILS_ENV."
-#     task drop: [:load_config] do
-#       ActiveRecord::Tasks::DatabaseTasks.drop_current(@postgres_env)
-#     end
-
-#     namespace :
-#     #dump from one schema to postgres schema
-#     # namespace :schema do
-#     #     desc "Creates a db/schema.rb file that is portable against any DB supported by Active Record"
-#     #     task dump: :load_config do
-#     #         require "active_record/schema_dumper"
-#     #         db_config = ActiveRecord::Base.configurations['postgres_production']
-#     #         connection = ActiveRecord::Base.establish_connection(db_config).connection
-#     #         File.open(@schema_path, "w:utf-8") do |file|
-#     #         ActiveRecord::SchemaDumper.dump(connection, file)
-#     #         end
-#     #     end
-#     #     desc "Loads a schema.rb file into the database"
-#     #     task load: :load_config do
-#     #     ActiveRecord::Tasks::DatabaseTasks.load_schema_current(:ruby, @schema_path, @reporting_env)
-#     #     end
-#     # end
-#     desc "Migrate to postgres database"
-#     task :migrate do
-#         Rake::Task["db:migrate"].invoke
-#     end
-
-#     task :migrate
-# end
