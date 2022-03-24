@@ -6,6 +6,8 @@ class FixReferences < ActiveRecord::Migration[5.2]
     # batteries table
     remove_column :batteries, :buildings_id
     add_reference :batteries, :building, foreign_key: true
+    remove_column :batteries, :employeeId
+    add_reference :batteries, :employee
 
     # building_details table
     drop_table :building_details
@@ -18,6 +20,7 @@ class FixReferences < ActiveRecord::Migration[5.2]
     remove_column :buildings, :adresses_id
     add_reference :buildings, :customer, foreign_key: true
     add_reference :buildings, :adress, foreign_key: true
+    remove_column :buildings, :Adress_of_the_building
 
     # columns table
     add_reference :columns, :battery, foreign_key: true
@@ -25,6 +28,9 @@ class FixReferences < ActiveRecord::Migration[5.2]
     # customers table
     remove_column :customers, :users_id
     add_reference :customers, :user, foreign_key: true
+    remove_column :customers, :Company_headquarters_adress
+    remove_column :customers, :city
+    add_reference :customers, :adress, foreign_key: true
 
     # detailsbuildings table
     remove_column :detailsbuildings, :buildings_id

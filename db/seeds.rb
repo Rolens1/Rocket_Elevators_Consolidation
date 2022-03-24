@@ -1,10 +1,5 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+require "faker"
+
 Employee.destroy_all
 Quote.destroy_all
 # User.destroy_all
@@ -14,6 +9,7 @@ Quote.destroy_all
 # Lead.destroy_all
 # Building.destroy_all
 # Adress.destroy_all
+
 user1 = User.create!({
     email: 'mathieu.houde@codeboxx.biz',
     password: '123456',
@@ -707,55 +703,64 @@ quote9 = Quote.create!({
                     email:Faker::Internet.email
                     })
   p "Created #{Employee.count} employee and #{User.count} users and #{Quote.count}  quotes."
-   require "faker"
 
+  # Non quote
+
+  path = File.join(File.dirname(__FILE__),"./seeds/addresses-us-500.json")
+  records = JSON.parse(File.read(path))
+
+  # Users
   100.times do |i|
-    path = File.join(File.dirname(__FILE__),"./seeds/addresses-us-500.json")
-    records = JSON.parse(File.read(path))
-    adress2 = records["addresses"][i + 100]
-
-    users = User.create!({
+    user = User.create!({
       email: Faker::Internet.unique.email,
       password: '123456',
       password_confirmation: '123456',
       admin: false
     })
-    users.save
+    user.save
+  end
 
-    customers = Customer.create!({
+  # Addresses
+  100.times do |i|
+    adress_record = records["addresses"][i]
+    adress = Adress.create!({
+      type_of_adress: ['Residential', 'Commercial','Corporate'].sample,
+      status: ['online','offline'].sample,
+      entity: ["House","Office","PObox","Gouvernement"].sample,
+      number_and_street: adress_record["address1"],
+      suite_or_appartment: ['suite','appartment'].sample,
+      city: adress_record["city"],
+      postal_code: adress_record["postalCode"],
+      country: "United States",
+      notes: Faker::Company.buzzword
+    })
+    adress.save
+  end
+
+  # Customers
+  for i in 1..(User.count / 2) do
+    customer = Customer.create!({
       Customers_Creation_Date:Faker::Date.backward(days: 1000),
       Company_Name:Faker::Company.unique.name,
-      Company_headquarters_adress: adress2["address1"],
-      city: adress2["city"],
       Full_Name_of_the_company_contact:Faker::Name.unique.name,
       Company_contact_phone:Faker::PhoneNumber.unique.cell_phone,
       Email_of_the_company_contact:Faker::Internet.unique.email,
       Company_Description:Faker::Company.unique.catch_phrase,
       Full_Name_of_servive_Technical_Authority:Faker::Name.unique.name,
       Technical_Manager_Email_for_Servive:Faker::Internet.unique.email,
-      user_id: users.id
+      user_id: i,
+      adress_id: i
     })
-    customers.save
+    customer.save
+  end
 
-    adress = records["addresses"][i]
-    
-    adresses = Adress.create!({
-      type_of_adress: ['Residential', 'Commercial','Corporate'].sample,
-      status: ['online','offline'].sample,
-      entity: ["House","Office","PObox","Gouvernement"].sample,
-      number_and_street: adress["address1"],
-      suite_or_appartment: ['suite','appartment'].sample,
-      city: adress["city"],
-      postal_code: adress["postalCode"],
-      country: "United States",
-      notes: Faker::Company.buzzword
-    })
-    adresses.save
-
+  # Buildings
+  100.times do
+    current_customer = Customer.find(Customer.pluck(:id).sample)
+    current_adress = Adress.find(Adress.pluck(:id).sample)
     building = Building.create!({
-      customer_id:customers.id,
-      adress_id:adresses.id,
-      Adress_of_the_building: adress["address1"],
+      customer_id: current_customer.id,
+      adress_id: current_adress.id,
       Full_Name_of_the_building_administrator:Faker::Name.unique.name,
       Email_of_the_administrator_of_the_building:Faker::Internet.email,
       Phone_number_of_the_building_administrator:Faker::PhoneNumber.unique.cell_phone,
@@ -764,53 +769,69 @@ quote9 = Quote.create!({
       Technical_contact_phone_for_the_building:Faker::PhoneNumber.unique.cell_phone
     })
     building.save
+  end
 
+  # Building details
+  100.times do
+    current_building = Building.find(Building.pluck(:id).sample)
     details = Detailsbuilding.create!({
       information_key:Faker::Company.buzzword,
       value:Faker::Company.buzzword,
-      building_id: building.id
+      building_id: current_building.id
     })
     details.save
-    
-    batteries = Battery.create!({
-      building_id: building.id ,
+  end
+  
+  # Batteries
+  100.times do
+    current_building = Building.find(Building.pluck(:id).sample)
+    current_employee = Employee.find(Employee.pluck(:id).sample)
+    battery = Battery.create!({
+      building_id: current_building.id,
+      employee_id: current_employee.id,
       status:['online','offline'].sample,
-      employeeId: rand(1...11),
       date_of_commissioning:Faker::Date.backward(days: 1000),
       date_of_last_inspection:Faker::Date.backward(days: 900),
       certificate_of_operations:'Inspected',
       information:Faker::Lorem.paragraph(sentence_count: 2, supplemental: true, random_sentences_to_add: 4),
       notes:Faker::Lorem.paragraph(sentence_count: 2, supplemental: true, random_sentences_to_add: 4),
     })
-    batteries.save
-    
-    columns = Column.create!({
-      battery_id:batteries.id,
+    battery.save
+  end
+
+  # Columns
+  100.times do
+    current_battery = Battery.find(Battery.pluck(:id).sample)
+    column = Column.create!({
+      battery_id: current_battery.id,
       set_type:['Residential','Commercial','Corporate'].sample,
       nb_of_floors_served:Faker::Number.between(from: 8, to: 120),
       status:['online','offline'].sample,
-       information: batteries.information,
-       notes: batteries.information
+      information: current_battery.information,
+      notes: current_battery.information
     })
-    columns.save
-    
-    n = rand(4) + 1
-    n.times do
-      elevators = Elevator.create!({
-        column_id: columns.id,
-        Serial_number:Faker::Number.between(from: 1, to: 5000),
-        Model:['Standard','Premium','Excelium'].sample,
-        Type:['Residential', 'Commercial','Corporate'].sample,
-        Status:['online','offline'].sample,
-        Date_of_commissioning:batteries.date_of_commissioning,
-        Date_of_last_inspection: batteries.date_of_last_inspection,
-        Certificate_of_inspection:'Inspected',
-        Information:batteries.information,
-        Notes: batteries.notes
-      })
-      elevators.save
+    column.save
+  end
+
+  # Elevators
+  100.times do
+    current_column = Column.find(Column.pluck(:id).sample)
+    elevator = Elevator.create!({
+      column_id: current_column.id,
+      Serial_number:Faker::Number.between(from: 1, to: 5000),
+      Model:['Standard','Premium','Excelium'].sample,
+      Type:['Residential', 'Commercial','Corporate'].sample,
+      Status:['online','offline'].sample,
+      Date_of_commissioning: Faker::Date::between(from: '2020-01-01', to: '2021-11-29'),
+      Date_of_last_inspection: Faker::Date::between(from: '2020-01-01', to: '2021-11-29'),
+      Certificate_of_inspection:'Inspected',
+      Information: current_column.information,
+      Notes: current_column.notes
+    })
+    elevator.save
   end
     
+  100.times do
     leads = Lead.create!({
       full_name:Faker::Name.unique.name,
       cie_name:Faker::Company.unique.name,
