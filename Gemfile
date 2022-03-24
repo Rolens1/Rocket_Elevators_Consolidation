@@ -20,6 +20,12 @@ gem 'owlcarousel-rails'
 gem 'font-awesome-rails'
 gem 'chartkick'
 gem 'groupdate'
+#gem 'freshdesk'
+gem 'freshdesk-api-v2-rails'
+#gem 'figaro'
+gem 'uri'
+gem 'net-http'
+gem 'httparty'
 
 #sms
 gem 'twilio-ruby'

@@ -9,6 +9,8 @@ Rails.application.routes.draw do
  
 
   resources :leads, :path =>'leads'
+  post '/leads', to: 'leads#create'
+
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   # namespace :admin do

@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2022_03_17_232104) do
 
   create_table "fact_elevators", force: :cascade do |t|
     t.integer "serialNumber"
-    t.datetime "dateOfCommissioning"
+    t.date "dateOfCommissioning"
     t.integer "buildingId"
     t.integer "customerId"
     t.string "buildingCity"
