@@ -1,19 +1,58 @@
 class LeadsController < ApplicationController
 
     require 'uri'
-    # require 'net/http'
-    # require 'httparty'
-    # include HTTPARTY
-
-    # require 'Freshdesk'
-    # Freshdesk.domain = ENV['FRESHDESK_API']
-    # Freshdesk.user_name_or_api_key = ENV['FRESHDESK_API_KEY']
-    # Freshdesk.password_or_x = "X"
-
-
+    require 'open-uri'
+    require 'fileutils'
 
     def new
         @lead = Lead.new
+    end
+
+    def show
+      @lead = Lead.find(params[:id])
+
+      client = DropboxApi::Client.new(ENV["DROPBOX_OAUTH_BEARER"])
+      
+      #check if client folder exists and creates client folder if file does not exist
+      results = client.list_folder "/Rocket-Elevators-AI-folder/"
+      contentList = []
+      results.entries.each do |f|
+        contentList.push(f.name)
+      end
+      if (contentList.include? @lead.cie_name) != true
+        client.create_folder "/Rocket-Elevators-AI-folder/" + @lead.cie_name
+      end
+      
+      # puts @lead.attached_files.read()
+
+      #extract attachments from database
+      
+      # puts @lead.attached_files.file.blob.filename
+      # File.open("storage/test_upload.png") do |f|
+      #   client.upload_by_chunks "/Rocket-Elevators-AI-folder/test_upload.png", f, :mode => :add
+      # end
+
+    end
+
+    def edit
+ 
+    end
+
+    def update
+      respond_to do |format|
+        if @lead.update(quote_params)
+          format.html { redirect_to lead_url(@lead), notice: "Lead was successfully updated." }
+          format.json { render :show, status: :ok, location: @quote }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @lead.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
+    def connect
+      
+
     end
 
     # POST /leads
@@ -24,53 +63,30 @@ class LeadsController < ApplicationController
       # else
       #   puts @lead.errors
       # end
- 
+      cie = @lead.cie_name.to_s.gsub!(/\s+/, '')
+      puts cie
+      puts Rails.root.join('public','uploads', cie)
+
+      # puts
+      # unless File.directory?(dirname)
+      #   FileUtils.mkdir_p(dirname)
+      # end
+
+      # uploaded_io = params[:lead][:attached_files]
+      # File.open(Rails.root.join('public','uploads', @lead.cie_name, uploaded_io.original_filename),'wb') do |file|
+      #   file.write(uploaded_io.read)
+      # end
+
       respond_to do |format|
+
+
         if @lead.save
           format.html  { redirect_to root_path, notice: 'Your message has been successfully sent!' }
 
-          # uri = URI('https://rocketelevatorsai.freshdesk.com/api/v2/tickets')
-          # HTTP.post(uri, 
-          #   {:headers => 'application/json'}, 
-          #   {:body => body})
-
-         
-          # body = {
-          # :field => @lead.full_name.to_s,
-          # :message => @lead.email.to_s
-          # }.to_json
-          
-          # params = {:apikey => '4sLFHNBFyVFxpEN3Z' }
-
-          # res = NET::HTTP.post_form(
-          #   uri,
-          #   :header => {
-          #     :apikey => '4sLFHNBFyVFxpEN3Z'
-          #   },
-          #   :body => {
-          #   'name' => @lead.full_name,
-          #   'email' => @lead.email
-          # })
-          
-          # uri = URI('https://rocketelevatorsai.freshdesk.com/api/v2/tickets')
-          # req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
-          # req.body = {param1: 'some value', param2: 'some other value'}.to_json
-          # res = Net::HTTP.start(uri.hostname, uri.port) do |http|
-          #   http.request(req)
-          # puts res.body if res.is_a?(Net::HTTPSuccess)
-          # Freshdesk::API::Ticket.create_a_ticket({
-          #   "name": @lead.full_name,
-          #   "email": @lead.email,
-          #   "phone": @lead.phone,
-          #   "subject": "Contact Request: " + @lead.project_name,
-          #   "description": @lead.message,
-          #   "type": "Question"
-          # })
           tickets_conn = Freshdesk::Tickets.new({
             :apikey => ENV["FRESHDESK_API_KEY"],
             :domain => ENV["FRESHDESK_API"],
           })
-      
 
           if @lead.full_name == nil
             @lead.full_name = "n/a"
@@ -126,6 +142,7 @@ class LeadsController < ApplicationController
       end
 
    end
+
   
   def lead_params
     params.require(:lead).permit(:full_name, :cie_name, :email, :phone, :project_name, :project_description, :department_in_charge, :message, :attached_files,)

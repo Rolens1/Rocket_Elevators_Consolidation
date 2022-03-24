@@ -6,6 +6,9 @@ Rails.application.routes.draw do
 
   root "home#index"
  
+  get 'dropbox/auth' => 'dropbox#auth'
+  get 'dropbox/setup' => 'dropbox#setup'
+  get 'dropbox/auth_callback' => 'dropbox#auth_callback'
 
   resources :leads, :path =>'leads'
   post '/leads', to: 'leads#create'

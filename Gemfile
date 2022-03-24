@@ -27,6 +27,7 @@ gem 'freshdesk-api-v2-rails'
 gem 'uri'
 gem 'net-http'
 gem 'httparty'
+gem 'dropbox_api'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
