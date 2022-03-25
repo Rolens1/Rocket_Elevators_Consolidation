@@ -119,6 +119,7 @@ class LeadsController < ApplicationController
           end  
           url = ENV['FRESHDESK_URL']
           uri = URI.parse(URI.escape(url))
+          uri2 = I18n.transliterate(url)
             
           data = {
             "status": 2, 
@@ -146,7 +147,7 @@ class LeadsController < ApplicationController
               "type": "Question",
               "subject": @lead.full_name + " from " + @lead.cie_name,
               "attachments": attachments,}
-              site.post(uri, data)
+              site.post(uri2, data)
             else
               data = {
                 "status": 2, 
