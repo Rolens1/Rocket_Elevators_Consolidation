@@ -144,7 +144,7 @@ class LeadsController < ApplicationController
               "type": "Question",
               "subject": @lead.full_name + " from " + @lead.cie_name,
               "attachments": attachments,}
-              site.post(data)
+              site.post(url, data)
             else
               data = {
                 "status": 2, 
