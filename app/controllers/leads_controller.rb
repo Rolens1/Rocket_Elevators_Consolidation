@@ -1,76 +1,81 @@
 class LeadsController < ApplicationController
 
     require 'uri'
-    # require 'net/http'
-    # require 'httparty'
-    # include HTTPARTY
-
-    # require 'Freshdesk'
-    # Freshdesk.domain = ENV['FRESHDESK_API']
-    # Freshdesk.user_name_or_api_key = ENV['FRESHDESK_API_KEY']
-    # Freshdesk.password_or_x = "X"
-
+    require 'open-uri'
+    require 'fileutils'
+    require 'json'
+    require 'rest_client'
 
 
     def new
         @lead = Lead.new
     end
 
+    def show
+      @lead = Lead.find(params[:id])
+
+      client = DropboxApi::Client.new(ENV["DROPBOX_OAUTH_BEARER"])
+      
+      #check if client folder exists and creates client folder if file does not exist
+      results = client.list_folder "/Rocket-Elevators-AI-folder/"
+      contentList = []
+      results.entries.each do |f|
+        contentList.push(f.name)
+      end
+      if (contentList.include? @lead.cie_name) != true
+        client.create_folder "/Rocket-Elevators-AI-folder/" + @lead.cie_name
+      end
+      
+      cie = @lead.cie_name.to_s.gsub(/\s+/, '')
+      #extract attachments from database
+      filepath = Rails.root.join('public','uploads', cie)
+
+      Dir.glob(filepath+ "*") do |f|
+       filename = File.basename(f)
+       File.open("#{f}") do |file|
+        client.upload_by_chunks "/Rocket-Elevators-AI-folder/" + cie + "/" + filename, file, :mode => :add
+        end
+      end  
+      @lead.update({"attached_files" => nil})
+    end
+
+    def edit
+ 
+    end
+
+    def update
+      respond_to do |format|
+        if @lead.update(quote_params)
+          format.html { redirect_to lead_url(@lead), notice: "Lead was successfully updated." }
+          format.json { render :show, status: :ok, location: @quote }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @lead.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
     # POST /leads
     def create
       @lead = Lead.new(lead_params)
-      # if @lead.save
-      #   puts "saved!"
-      # else
-      #   puts @lead.errors
-      # end
- 
+
+      cie = @lead.cie_name.to_s.gsub(/\s+/, '')
+      dirname = Rails.root.join('public','uploads', cie)
+      unless File.directory?(dirname)
+        FileUtils.mkdir_p(dirname)
+      end
+      
+
+      if @lead.attached_files != nil
+        uploaded_io = params[:lead][:attached_files]
+        File.open(Rails.root.join('public','uploads', cie, uploaded_io.original_filename),'wb') do |file|
+          file.write(uploaded_io.read)
+        end
+      end
+
       respond_to do |format|
         if @lead.save
           format.html  { redirect_to root_path, notice: 'Your message has been successfully sent!' }
-
-          # uri = URI('https://rocketelevatorsai.freshdesk.com/api/v2/tickets')
-          # HTTP.post(uri, 
-          #   {:headers => 'application/json'}, 
-          #   {:body => body})
-
-         
-          # body = {
-          # :field => @lead.full_name.to_s,
-          # :message => @lead.email.to_s
-          # }.to_json
-          
-          # params = {:apikey => '4sLFHNBFyVFxpEN3Z' }
-
-          # res = NET::HTTP.post_form(
-          #   uri,
-          #   :header => {
-          #     :apikey => '4sLFHNBFyVFxpEN3Z'
-          #   },
-          #   :body => {
-          #   'name' => @lead.full_name,
-          #   'email' => @lead.email
-          # })
-          
-          # uri = URI('https://rocketelevatorsai.freshdesk.com/api/v2/tickets')
-          # req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
-          # req.body = {param1: 'some value', param2: 'some other value'}.to_json
-          # res = Net::HTTP.start(uri.hostname, uri.port) do |http|
-          #   http.request(req)
-          # puts res.body if res.is_a?(Net::HTTPSuccess)
-          # Freshdesk::API::Ticket.create_a_ticket({
-          #   "name": @lead.full_name,
-          #   "email": @lead.email,
-          #   "phone": @lead.phone,
-          #   "subject": "Contact Request: " + @lead.project_name,
-          #   "description": @lead.message,
-          #   "type": "Question"
-          # })
-          tickets_conn = Freshdesk::Tickets.new({
-            :apikey => ENV["FRESHDESK_API_KEY"],
-            :domain => ENV["FRESHDESK_API"],
-          })
-      
 
           if @lead.full_name == nil
             @lead.full_name = "n/a"
@@ -97,12 +102,22 @@ class LeadsController < ApplicationController
             @lead.message = "n/a"
           end
           if @lead.attached_files == nil
-            @lead.attached_files = "n/a"
             has_attachment = "not"  
           else
             has_attachment = ""
           end
-        
+          
+          companyName = @lead.cie_name.to_s.gsub(/\s+/, '')
+
+          filepath = Rails.root.join('public','uploads', companyName)
+          puts filepath
+          attachments = []
+          Dir.glob(filepath+ "*") do |f|
+            filename = File.basename(f)
+            puts f
+            attachments.push(File.new(f, 'rb')) 
+          end  
+
           data = {
             "status": 2, 
             "priority": 1,
@@ -113,11 +128,38 @@ class LeadsController < ApplicationController
               "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
             "type": "Question",
             "subject": @lead.full_name + " from " + @lead.cie_name,
-          }
-          
-          
-          tickets_conn.create(options = {headers: 'multipart/form-data'}, body = data)
+          }.to_json
 
+          site = RestClient::Resource.new(ENV['FRESHDESK_URL'], ENV["FRESHDESK_API_KEY"], 'X')
+
+          if @lead.attached_files != nil 
+            data = {
+              "status": 2, 
+              "priority": 1,
+              "name": @lead.full_name, 
+              "phone": @lead.phone,
+              "email": @lead.email,
+              "description": 
+                "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
+              "type": "Question",
+              "subject": @lead.full_name + " from " + @lead.cie_name,
+              "attachments": attachments,}
+              site.post(data)
+            else
+              data = {
+                "status": 2, 
+                "priority": 1,
+                "name": @lead.full_name, 
+                "phone": @lead.phone,
+                "email": @lead.email,
+                "description": 
+                  "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
+                "type": "Question",
+                "subject": @lead.full_name + " from " + @lead.cie_name,
+              }
+              data_json = JSON.generate(data)
+              site.post(data_json, headers = {"Content-Type" => "application/json"})
+          end
           format.json  { render json: Lead.create(lead_params) }
         else
           format.html  { redirect_to root_path, notice: 'Your message was not sent successfully.' }
@@ -126,6 +168,7 @@ class LeadsController < ApplicationController
       end
 
    end
+
   
   def lead_params
     params.require(:lead).permit(:full_name, :cie_name, :email, :phone, :project_name, :project_description, :department_in_charge, :message, :attached_files,)
