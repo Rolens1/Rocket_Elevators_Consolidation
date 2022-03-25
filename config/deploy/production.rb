@@ -8,9 +8,9 @@ server "35.183.131.50", user: "ubuntu", roles: %w{app db web}
 # server "db.example.com", user: "deploy", roles: %w{db}
 app = ENV['APP']
 if app.nil? or app.empty?
-  app = "DavidPelletier" 
+  app = "EricGaudreault" 
 end
-set :branch, proc { `git rev-parse --abbrev-ref master`.chomp }
+set :branch, proc { `git rev-parse --abbrev-ref main`.chomp }
 set :application, app
 set :rails_env, "development"
 set :bundle_without, "production"
