@@ -23,7 +23,7 @@ gem 'groupdate'
 #gem 'freshdesk'
 gem 'freshdesk-api-v2-rails'
 gem 'figaro'
-gem 'uri'
+gem 'uri', '~> 0.11.0'
 gem 'net-http'
 gem 'httparty'
 
