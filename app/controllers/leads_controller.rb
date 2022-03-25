@@ -23,15 +23,17 @@ class LeadsController < ApplicationController
         client.create_folder "/Rocket-Elevators-AI-folder/" + @lead.cie_name
       end
       
-      # puts @lead.attached_files.read()
-
+      cie = @lead.cie_name.to_s.gsub(/\s+/, '')
       #extract attachments from database
-      
-      # puts @lead.attached_files.file.blob.filename
-      # File.open("storage/test_upload.png") do |f|
-      #   client.upload_by_chunks "/Rocket-Elevators-AI-folder/test_upload.png", f, :mode => :add
-      # end
+      filepath = Rails.root.join('public','uploads', cie)
 
+      Dir.glob(filepath+ "*") do |f|
+       filename = File.basename(f)
+       File.open("#{f}") do |file|
+        client.upload_by_chunks "/Rocket-Elevators-AI-folder/" + cie + "/" + filename, file, :mode => :add
+        end
+      end  
+      @lead.update({"attached_files" => nil})
     end
 
     def edit
@@ -58,28 +60,22 @@ class LeadsController < ApplicationController
     # POST /leads
     def create
       @lead = Lead.new(lead_params)
-      # if @lead.save
-      #   puts "saved!"
-      # else
-      #   puts @lead.errors
-      # end
-      cie = @lead.cie_name.to_s.gsub!(/\s+/, '')
-      puts cie
-      puts Rails.root.join('public','uploads', cie)
 
-      # puts
-      # unless File.directory?(dirname)
-      #   FileUtils.mkdir_p(dirname)
-      # end
+      cie = @lead.cie_name.to_s.gsub(/\s+/, '')
+      dirname = Rails.root.join('public','uploads', cie)
+      unless File.directory?(dirname)
+        FileUtils.mkdir_p(dirname)
+      end
+      
 
-      # uploaded_io = params[:lead][:attached_files]
-      # File.open(Rails.root.join('public','uploads', @lead.cie_name, uploaded_io.original_filename),'wb') do |file|
-      #   file.write(uploaded_io.read)
-      # end
+      if @lead.attached_files.size != 0
+        uploaded_io = params[:lead][:attached_files]
+        File.open(Rails.root.join('public','uploads', cie, uploaded_io.original_filename),'wb') do |file|
+          file.write(uploaded_io.read)
+        end
+      end
 
       respond_to do |format|
-
-
         if @lead.save
           format.html  { redirect_to root_path, notice: 'Your message has been successfully sent!' }
 
@@ -118,7 +114,22 @@ class LeadsController < ApplicationController
           else
             has_attachment = ""
           end
-        
+          
+          companyName = @lead.cie_name.to_s.gsub(/\s+/, '')
+
+          filepath = Rails.root.join('public','uploads', companyName)
+          puts filepath
+          attachments = []
+          Dir.glob(filepath+ "*") do |f|
+            filename = File.basename(f)
+            puts f
+            attachments.push(File.new(f, 'rb')) 
+          end  
+
+          puts "######"
+          puts attachments
+          puts "######"
+
           data = {
             "status": 2, 
             "priority": 1,
@@ -129,6 +140,7 @@ class LeadsController < ApplicationController
               "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
             "type": "Question",
             "subject": @lead.full_name + " from " + @lead.cie_name,
+            "attachments": [File.open('public/uploads/b4/testfile.png')]
           }
           
           
