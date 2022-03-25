@@ -1,7 +1,7 @@
 class FixReferences < ActiveRecord::Migration[5.2]
   def change
     # adresses table
-    remove_column :adresses, :customers_id
+    #remove_column :adresses, :customers_id
 
     # batteries table
     remove_column :batteries, :buildings_id
