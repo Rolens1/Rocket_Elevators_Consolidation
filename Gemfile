@@ -22,14 +22,13 @@ gem 'chartkick'
 gem 'groupdate'
 #gem 'freshdesk'
 gem 'freshdesk-api-v2-rails'
-#gem 'figaro'
-gem 'uri'
-gem 'net-http'
+gem 'figaro'
+#gem 'uri', '~> 0.11.0'
+#gem 'net-http'
 gem 'httparty'
 gem 'dropbox_api'
 gem 'rest-client'
 gem 'aws-sdk'
-
 #sms
 gem 'twilio-ruby'
 

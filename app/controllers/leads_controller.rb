@@ -55,7 +55,7 @@ class LeadsController < ApplicationController
     end
   end
 
-  # POST /leads
+    # POST /leads
   def create
     @lead = Lead.new(lead_params)
 
@@ -65,7 +65,7 @@ class LeadsController < ApplicationController
       FileUtils.mkdir_p(dirname)
     end
     
-
+    
     if @lead.attached_files != nil
       uploaded_io = params[:lead][:attached_files]
       File.open(Rails.root.join('public','uploads', cie, uploaded_io.original_filename),'wb') do |file|
@@ -118,18 +118,6 @@ class LeadsController < ApplicationController
           attachments.push(File.new(f, 'rb')) 
         end  
 
-        data = {
-          "status": 2, 
-          "priority": 1,
-          "name": @lead.full_name, 
-          "phone": @lead.phone,
-          "email": @lead.email,
-          "description": 
-            "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
-          "type": "Question",
-          "subject": @lead.full_name + " from " + @lead.cie_name,
-        }.to_json
-
         site = RestClient::Resource.new(ENV['FRESHDESK_URL'], ENV["FRESHDESK_API_KEY"], 'X')
 
         if @lead.attached_files != nil 
@@ -159,11 +147,11 @@ class LeadsController < ApplicationController
             }
             data_json = JSON.generate(data)
             site.post(data_json, headers = {"Content-Type" => "application/json"})
-        end
-        format.json  { render json: Lead.create(lead_params) }
-      else
-        format.html  { redirect_to root_path, notice: 'Your message was not sent successfully.' }
-        format.json  { render :json => @lead.errors, :status => :unprocessable_entity }
+          end
+          format.json  { render json: Lead.create(lead_params) }
+        else
+          format.html  { redirect_to root_path, notice: 'Your message was not sent successfully.' }
+          format.json  { render :json => @lead.errors, :status => :unprocessable_entity }
       end
     end
 
