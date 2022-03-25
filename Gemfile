@@ -27,7 +27,7 @@ gem 'uri'
 gem 'net-http'
 gem 'httparty'
 gem 'dropbox_api'
-
+gem 'rest-client'
 #sms
 gem 'twilio-ruby'
 

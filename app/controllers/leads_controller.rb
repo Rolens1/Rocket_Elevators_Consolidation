@@ -79,10 +79,10 @@ class LeadsController < ApplicationController
         if @lead.save
           format.html  { redirect_to root_path, notice: 'Your message has been successfully sent!' }
 
-          tickets_conn = Freshdesk::Tickets.new({
-            :apikey => ENV["FRESHDESK_API_KEY"],
-            :domain => ENV["FRESHDESK_API"],
-          })
+          # tickets_conn = Freshdesk::Tickets.new({
+          #   :apikey => ENV["FRESHDESK_API_KEY"],
+          #   :domain => ENV["FRESHDESK_API"],
+          # })
 
           if @lead.full_name == nil
             @lead.full_name = "n/a"
@@ -140,11 +140,13 @@ class LeadsController < ApplicationController
               "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
             "type": "Question",
             "subject": @lead.full_name + " from " + @lead.cie_name,
-            "attachments": [File.open('public/uploads/b4/testfile.png')]
+            "attachments": attachments,
           }
           
+          site = RestClient::Resource.new(ENV['FRESHDESK_URL'], ENV["FRESHDESK_API_KEY"], 'X')
+          site.post(data)
           
-          tickets_conn.create(options = {headers: 'multipart/form-data'}, body = data)
+          # tickets_conn.create(options = {headers: 'multipart/form-data'}, body = data)
 
           format.json  { render json: Lead.create(lead_params) }
         else
