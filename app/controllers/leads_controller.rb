@@ -118,7 +118,7 @@ class LeadsController < ApplicationController
             attachments.push(File.new(f, 'rb')) 
           end  
           url = ENV['FRESHDESK_URL']
-          uri = URI.parse(url)
+          uri = URI.parse(URI.escape(url))
             
           data = {
             "status": 2, 
