@@ -37,6 +37,8 @@ class LeadsController < ApplicationController
         end
       end  
       @lead.update({"attached_files" => nil})
+
+      redirect_to rails_admin_url, notice: "Files were successfully sent to Dropbox. Now please manually add this lead as a customer. Sorry I didn't have time to make this happen for you automatically..."
     end
 
     def edit
