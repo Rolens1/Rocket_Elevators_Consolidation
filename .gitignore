@@ -31,20 +31,13 @@
 yarn-debug.log*
 .yarn-integrity
 
-/config/database.yml
-/config/postgres_database.yml
-config/postgres_database.yml
-
 #Ignore keys
 application.yml
 
 #vscode
 /.vscode
 
-#Ignore postgres database infos
 postgres_database.yml
-
-#infos to connect
 database.yml
 
 #env variables
