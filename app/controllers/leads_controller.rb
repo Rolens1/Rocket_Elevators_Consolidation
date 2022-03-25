@@ -117,7 +117,9 @@ class LeadsController < ApplicationController
             puts f
             attachments.push(File.new(f, 'rb')) 
           end  
-
+          url = ENV['FRESHDESK_URL']
+          uri = URI.parse(url)
+            
           data = {
             "status": 2, 
             "priority": 1,
@@ -144,7 +146,7 @@ class LeadsController < ApplicationController
               "type": "Question",
               "subject": @lead.full_name + " from " + @lead.cie_name,
               "attachments": attachments,}
-              site.post(ENV['FRESHDESK_URL'], data)
+              site.post(uri, data)
             else
               data = {
                 "status": 2, 
