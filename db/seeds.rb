@@ -197,7 +197,8 @@ Employee.create!([{
       installation_fees: installFees,
       final_price: finalPrice,
       companyName:Faker::Company.unique.name,
-      email:Faker::Internet.email
+      email:Faker::Internet.email,
+      processed: true
     })
 
     # puts quotes
@@ -245,7 +246,8 @@ Employee.create!([{
         installation_fees: installFees,
         final_price: finalPrice,
         companyName:Faker::Company.unique.name,
-        email:Faker::Internet.email
+        email:Faker::Internet.email,
+        processed: [true, false].sample
       })
     end
 
@@ -290,7 +292,8 @@ Employee.create!([{
       installation_fees: installFees,
       final_price: finalPrice,
       companyName:Faker::Company.unique.name,
-      email:Faker::Internet.email
+      email:Faker::Internet.email,
+      processed: [true, false].sample
     })
   end
 
@@ -319,7 +322,8 @@ Employee.create!([{
       installation_fees: installFees,
       final_price: finalPrice,
       companyName:Faker::Company.unique.name,
-      email:Faker::Internet.email
+      email:Faker::Internet.email,
+      processed: [true, false].sample
     })
 
     # puts quotes
@@ -349,7 +353,8 @@ Employee.create!([{
         installation_fees: installFees,
         final_price: finalPrice,
         companyName:Faker::Company.unique.name,
-        email:Faker::Internet.email
+        email:Faker::Internet.email,
+        processed: [true, false].sample
       })
     end
 
@@ -377,7 +382,8 @@ Employee.create!([{
       installation_fees: installFees,
       final_price: finalPrice,
       companyName:Faker::Company.unique.name,
-      email:Faker::Internet.email
+      email:Faker::Internet.email,
+      processed: [true, false].sample
     })
   end
   
@@ -395,7 +401,8 @@ Employee.create!([{
     installation_fees:19669,
     final_price:216359,
     companyName:Faker::Company.unique.name,
-    email:Faker::Internet.email
+    email:Faker::Internet.email,
+    processed: true
   
   })
 
@@ -413,7 +420,8 @@ total_price_of_elevators:121040,
 installation_fees:12104,
 final_price:133144,
 companyName:Faker::Company.unique.name,
-email:Faker::Internet.email
+email:Faker::Internet.email,
+processed: true
 
 })
 
@@ -432,7 +440,8 @@ total_price_of_elevators:2655315,
 installation_fees:265531,
 final_price:2920846,
 companyName:Faker::Company.unique.name,
-email:Faker::Internet.email
+email:Faker::Internet.email,
+processed: true
 
 })
 
@@ -451,7 +460,8 @@ total_price_of_elevators:196690,
 installation_fees:19669,
 final_price:216359,
 companyName:Faker::Company.unique.name,
-email:Faker::Internet.email
+email:Faker::Internet.email,
+processed: true
 
 })
 quote5 = Quote.create!({
@@ -469,7 +479,8 @@ total_price_of_elevators:7565,
 installation_fees:756,
 final_price:8321,
 companyName:Faker::Company.unique.name,
-email:Faker::Internet.email
+email:Faker::Internet.email,
+processed: true
 
 })
 quote6 = Quote.create!({
@@ -487,7 +498,8 @@ total_price_of_elevators:12345,
 installation_fees:1604,
 final_price:13949,
 companyName:Faker::Company.unique.name,
-email:Faker::Internet.email
+email:Faker::Internet.email,
+processed: true
 
 })
 
@@ -508,7 +520,8 @@ total_price_of_elevators:123450,
 installation_fees:16048,
 final_price:139498,
 companyName:Faker::Company.unique.name,
-email:Faker::Internet.email
+email:Faker::Internet.email,
+processed: true
 
 })
 
@@ -529,7 +542,8 @@ total_price_of_elevators:98760,
 installation_fees:12838,
 final_price:111598,
 companyName:Faker::Company.unique.name,
-email:Faker::Internet.email
+email:Faker::Internet.email,
+processed: true
 
 })
 
@@ -550,7 +564,8 @@ quote9 = Quote.create!({
   installation_fees:7565,
   final_price:83215,
   companyName:Faker::Company.unique.name,
-  email:Faker::Internet.email
+  email:Faker::Internet.email,
+  processed: true
 
   })
 
@@ -573,137 +588,13 @@ quote9 = Quote.create!({
     installation_fees:455413,
     final_price:5000943,
     companyName:Faker::Company.unique.name,
-    email:Faker::Internet.email
+    email:Faker::Internet.email,
+    processed: true
   
     })
 
 
   p "Created #{Employee.count} employee and #{User.count} users."
-
-        quote4 = Quote.create!({
-          building_type:'Residential',
-          product_line:'Standard',
-          no_of_apartments: 60,
-          no_of_floors: 50,
-          no_of_basements:6,
-          created_at:Faker::Date.backward(days: 5000),
-          updated_at:Faker::Date.backward(days: 1000),
-          no_of_elevators_needed:26,
-          unit_price:7565,
-          total_price_of_elevators:196690,
-          installation_fees:19669,
-          final_price:216359,
-          companyName:Faker::Company.unique.name,
-          email:Faker::Internet.email
-          })
-          quote5 = Quote.create!({
-            building_type:'Residential',
-            product_line:'Standard',
-            no_of_apartments: 20,
-            no_of_floors: 8,
-            no_of_basements:2,
-            created_at:Faker::Date.backward(days: 5000),
-            updated_at:Faker::Date.backward(days: 1000),
-            no_of_elevators_needed:1,
-            unit_price:7565,
-            total_price_of_elevators:7565,
-            installation_fees:756,
-            final_price:8321,
-            companyName:Faker::Company.unique.name,
-            email:Faker::Internet.email
-            })
-           quote6 = Quote.create!({
-             building_type:'Residential',
-             product_line:'Premium',
-             no_of_apartments: 28,
-             no_of_floors: 16,
-             no_of_basements:3,
-             created_at:Faker::Date.backward(days: 5000),
-             updated_at:Faker::Date.backward(days: 1000),
-             no_of_elevators_needed:1,
-             unit_price:12345,
-             total_price_of_elevators:12345,
-             installation_fees:1604,
-             final_price:13949,
-             companyName:Faker::Company.unique.name,
-             email:Faker::Internet.email
-             })
-             quote7 = Quote.create!({
-              building_type:'Commercial',
-              product_line:'Premium',
-              no_of_floors: 80,
-              no_of_basements:62,
-              no_of_businesses:30,
-              no_of_parking_spaces:100,
-              no_of_elevator_cages:10,
-              created_at:Faker::Date.backward(days: 5000),
-              updated_at:Faker::Date.backward(days: 1000),
-              no_of_elevators_needed:10,
-              unit_price:12345,
-              total_price_of_elevators:123450,
-              installation_fees:16048,
-              final_price:139498,
-              companyName:Faker::Company.unique.name,
-              email:Faker::Internet.email
-              })
-              quote8 = Quote.create!({
-                building_type:'Commercial',
-                product_line:'Premium',
-                no_of_floors: 50,
-                no_of_basements:10,
-                no_of_businesses:3,
-                no_of_parking_spaces:40,
-                no_of_elevator_cages:8,
-                created_at:Faker::Date.backward(days: 5000),
-                updated_at:Faker::Date.backward(days: 1000),
-                no_of_elevators_needed:8,
-                unit_price:12345,
-                total_price_of_elevators:98760,
-                installation_fees:12838,
-                final_price:111598,
-                companyName:Faker::Company.unique.name,
-                email:Faker::Internet.email
-                })
-                quote9 = Quote.create!({
-                  building_type:'Commercial',
-                  product_line:'Standard',
-                  no_of_floors: 60,
-                  no_of_basements:1,
-                  no_of_businesses:30,
-                  no_of_parking_spaces:200,
-                  no_of_elevator_cages:10,
-                  created_at:Faker::Date.backward(days: 5000),
-                  updated_at:Faker::Date.backward(days: 1000),
-                  no_of_elevators_needed:18,
-                  unit_price:7565,
-                  total_price_of_elevators:75650,
-                  installation_fees:7565,
-                  final_price:83215,
-                  companyName:Faker::Company.unique.name,
-                  email:Faker::Internet.email
-                  })
-                  quote10 = Quote.create!({
-                    building_type:'Commercial',
-                    product_line:'Standard',
-                    no_of_floors: 60,
-                    no_of_basements:10,
-                    no_of_businesses:60,
-                    no_of_parking_spaces:300,
-                    no_of_elevator_cages:16,
-                    max_of_occupants_per_floor:100,
-                    no_of_hours_of_activities:12,
-                    created_at:Faker::Date.backward(days: 5000),
-                    updated_at:Faker::Date.backward(days: 1000),
-                    no_of_elevators_needed:602,
-                    unit_price:7565,
-                    total_price_of_elevators:4554130,
-                    installation_fees:455413,
-                    final_price:5000943,
-                    companyName:Faker::Company.unique.name,
-                    email:Faker::Internet.email
-                    })
-  p "Created #{Employee.count} employee and #{User.count} users and #{Quote.count}  quotes."
-
   # Non quote
 
   path = File.join(File.dirname(__FILE__),"./seeds/addresses-us-500.json")
