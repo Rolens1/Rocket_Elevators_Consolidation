@@ -33,13 +33,15 @@ RailsAdmin.config do |config|
   # end
 
   config.navigation_static_links = {
+    'Play briefing' => 'rails_admin/data/playbriefing',
     'Data Warehouse' => 'rails_admin/data/index'
+    
   }
 
 
   config.actions do
-    dashboard                     # mandatory
-    index                         # mandatory
+    dashboard                       
+    index                         
     new
     export
     bulk_delete
@@ -48,6 +50,10 @@ RailsAdmin.config do |config|
     delete
     show_in_app
   end
+
+  # show_in_app do
+  #   i18n_key :customized
+  # end       
 
   # config.model 'Lead' do
   #   edit do
