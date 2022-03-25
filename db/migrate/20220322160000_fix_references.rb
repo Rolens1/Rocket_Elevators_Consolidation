@@ -13,7 +13,7 @@ class FixReferences < ActiveRecord::Migration[5.2]
     drop_table :building_details
 
     # buildingdetails table
-    drop_table :buildingdetails
+    #drop_table :buildingdetails
 
     # buildings table
     remove_column :buildings, :customers_id
