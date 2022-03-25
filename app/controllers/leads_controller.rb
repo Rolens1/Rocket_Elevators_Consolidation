@@ -3,6 +3,9 @@ class LeadsController < ApplicationController
     require 'uri'
     require 'open-uri'
     require 'fileutils'
+    require 'json'
+    require 'rest_client'
+
 
     def new
         @lead = Lead.new
@@ -52,11 +55,6 @@ class LeadsController < ApplicationController
       end
     end
 
-    def connect
-      
-
-    end
-
     # POST /leads
     def create
       @lead = Lead.new(lead_params)
@@ -68,7 +66,7 @@ class LeadsController < ApplicationController
       end
       
 
-      if @lead.attached_files.size != 0
+      if @lead.attached_files != nil
         uploaded_io = params[:lead][:attached_files]
         File.open(Rails.root.join('public','uploads', cie, uploaded_io.original_filename),'wb') do |file|
           file.write(uploaded_io.read)
@@ -78,11 +76,6 @@ class LeadsController < ApplicationController
       respond_to do |format|
         if @lead.save
           format.html  { redirect_to root_path, notice: 'Your message has been successfully sent!' }
-
-          # tickets_conn = Freshdesk::Tickets.new({
-          #   :apikey => ENV["FRESHDESK_API_KEY"],
-          #   :domain => ENV["FRESHDESK_API"],
-          # })
 
           if @lead.full_name == nil
             @lead.full_name = "n/a"
@@ -109,7 +102,6 @@ class LeadsController < ApplicationController
             @lead.message = "n/a"
           end
           if @lead.attached_files == nil
-            @lead.attached_files = "n/a"
             has_attachment = "not"  
           else
             has_attachment = ""
@@ -126,10 +118,6 @@ class LeadsController < ApplicationController
             attachments.push(File.new(f, 'rb')) 
           end  
 
-          puts "######"
-          puts attachments
-          puts "######"
-
           data = {
             "status": 2, 
             "priority": 1,
@@ -140,14 +128,38 @@ class LeadsController < ApplicationController
               "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
             "type": "Question",
             "subject": @lead.full_name + " from " + @lead.cie_name,
-            "attachments": attachments,
-          }
-          
-          site = RestClient::Resource.new(ENV['FRESHDESK_URL'], ENV["FRESHDESK_API_KEY"], 'X')
-          site.post(data)
-          
-          # tickets_conn.create(options = {headers: 'multipart/form-data'}, body = data)
+          }.to_json
 
+          site = RestClient::Resource.new(ENV['FRESHDESK_URL'], ENV["FRESHDESK_API_KEY"], 'X')
+
+          if @lead.attached_files != nil 
+            data = {
+              "status": 2, 
+              "priority": 1,
+              "name": @lead.full_name, 
+              "phone": @lead.phone,
+              "email": @lead.email,
+              "description": 
+                "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
+              "type": "Question",
+              "subject": @lead.full_name + " from " + @lead.cie_name,
+              "attachments": attachments,}
+              site.post(data)
+            else
+              data = {
+                "status": 2, 
+                "priority": 1,
+                "name": @lead.full_name, 
+                "phone": @lead.phone,
+                "email": @lead.email,
+                "description": 
+                  "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
+                "type": "Question",
+                "subject": @lead.full_name + " from " + @lead.cie_name,
+              }
+              data_json = JSON.generate(data)
+              site.post(data_json, headers = {"Content-Type" => "application/json"})
+          end
           format.json  { render json: Lead.create(lead_params) }
         else
           format.html  { redirect_to root_path, notice: 'Your message was not sent successfully.' }
