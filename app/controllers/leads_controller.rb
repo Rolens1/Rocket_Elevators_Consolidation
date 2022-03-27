@@ -1,5 +1,4 @@
 class LeadsController < ApplicationController
-  skip_before_filter  :verify_authenticity_token
 
   require 'uri'
   require 'open-uri'
@@ -76,8 +75,7 @@ class LeadsController < ApplicationController
 
     respond_to do |format|
       if @lead.save
-        format.html  { redirect_to root_path, notice: 'Your message has been successfully sent!' }
-
+      
         if @lead.full_name == nil
           @lead.full_name = "n/a"
         end
@@ -167,8 +165,9 @@ class LeadsController < ApplicationController
             #   :playload => data_wo_attachment,
             #   :headers => {"Content-Type" => 'application/json'})
             # )
-
           end
+        
+          format.html  { redirect_to root_path, notice: 'Your message has been successfully sent!' }
           format.json  { render json: Lead.create(lead_params) }
         else
           format.html  { redirect_to root_path, notice: 'Your message was not sent successfully.' }
