@@ -3,11 +3,27 @@ class DataController < AdminController
     @disable_nav = true
 
     def index
-        
     end
 
     def chart
-        
+    end
+
+    def map
+       maps = []
+        Map.find_each do |m|
+            maps.push({
+                'address' => m.location_of_the_building,
+                'floors' => m.no_of_floors_in_the_building,
+                'client_name' => m.client_name,
+                'batteries' => m.no_of_batteries,
+                'elevators' => m.no_of_elevators,
+                'columns' => m.no_of_columns,
+                'technical_contact' => m.full_name_of_technical_contact,
+                'lat' => m.latitude.to_f,
+                'lng' => m.longitude.to_f
+            })
+        end
+        @mapData = maps.to_json
     end
 
     def playbriefing

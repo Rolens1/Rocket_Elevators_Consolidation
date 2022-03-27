@@ -10,20 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_22_181433) do
+ActiveRecord::Schema.define(version: 2022_03_27_175059) do
 
   create_table "adresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "type_of_adress"
     t.string "status"
     t.string "entity"
     t.string "number_and_street"
-    t.integer "suite_or_appartment"
+    t.string "suite_or_appartment"
     t.string "city"
     t.string "postal_code"
     t.string "country"
     t.string "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "state"
+    t.string "latitude"
+    t.string "longitude"
   end
 
   create_table "batteries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
@@ -52,6 +55,7 @@ ActiveRecord::Schema.define(version: 2022_03_22_181433) do
     t.datetime "updated_at", null: false
     t.bigint "customer_id"
     t.bigint "adress_id"
+    t.integer "No_of_floors"
     t.index ["adress_id"], name: "index_buildings_on_adress_id"
     t.index ["customer_id"], name: "index_buildings_on_customer_id"
   end
@@ -136,6 +140,20 @@ ActiveRecord::Schema.define(version: 2022_03_22_181433) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "maps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+    t.string "location_of_the_building"
+    t.integer "no_of_floors_in_the_building"
+    t.string "client_name"
+    t.integer "no_of_batteries"
+    t.integer "no_of_columns"
+    t.integer "no_of_elevators"
+    t.string "full_name_of_technical_contact"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "latitude"
+    t.string "longitude"
+  end
+
   create_table "quotes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "building_type"
     t.string "product_line"
@@ -162,6 +180,7 @@ ActiveRecord::Schema.define(version: 2022_03_22_181433) do
     t.string "projectName"
     t.string "projectDesc"
     t.string "message"
+    t.boolean "processed"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|

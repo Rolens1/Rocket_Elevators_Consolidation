@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get 'rails_admin/data/index', to: 'data#index'
   get 'admin/rails_admin/data/index', to: 'data#index'
   get 'rails_admin/data/playbriefing', to: 'data#playbriefing'
+  get 'rails_admin/data/map', to: 'data#map'
 
 
   # get '/', to: "home#index"

@@ -37,6 +37,7 @@ application.yml
 #vscode
 /.vscode
 
+config/postgres_database.yml
 postgres_database.yml
 database.yml
 
