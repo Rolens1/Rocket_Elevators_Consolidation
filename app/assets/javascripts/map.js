@@ -1,18 +1,8 @@
 function initMap(mapData) {
-   
     
     dataJson = JSON.stringify(mapData)
     mapDetails = JSON.parse(dataJson)
-    
-    console.log(mapDetails.length)
 
-    // Display the area between the location southWest and northEast.
-    // map.fitBounds(bounds);
-  
-    // Add 5 markers to map at random locations.
-    // For each of these markers, give them a title with their index, and when
-    // they are clicked they should open an infowindow with text from a secret
-    // message.
     const map = new google.maps.Map(document.getElementById("map"), {
       zoom: 4,
       center: { lat: mapDetails[1].lat, lng: mapDetails[1].lng },
