@@ -131,3 +131,12 @@ When a lead becomes a customer, the admin have the option to send any relevant f
 
 ### Google Maps
 
+Admin now has the option to view a map of where their customers' buildings are located. Simply login into admin and click on "Show Customers On A Map" on the bottom left of the admin homepage under "Links". Once you are on the map, you are able to click on the markers to view detailed information about the building. 
+
+### Slack
+
+Steps to configure slack:
+- create an app
+- Add the app to the workspace
+- Install the slack-notifier gem
+- Create a web hook  and adding it to you code
