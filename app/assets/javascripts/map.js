@@ -44,8 +44,8 @@ function createContentString(mapDetails){
     '<h3 id="firstHeading" class="firstHeading">Building Location Details</h3>' +
     '<div id="bodyContent">' +
     "<h5>Location of the Building: " + mapDetails[i].address + "</h5>" + 
-    "<h5>Number of floors in the building: " + mapDetails[i].map + "</h5>" + 
-    "<h5>Client name: " + mapDetails[i].floor + "</h5>" + 
+    "<h5>Number of floors in the building: " + mapDetails[i].floors + "</h5>" + 
+    "<h5>Client name: " + mapDetails[i].client_name + "</h5>" + 
     "<h5>Number of Batteries: " + mapDetails[i].batteries + "</h5>" + 
     "<h5>Number of Columns: " + mapDetails[i].columns + "</h5>" + 
     "<h5>Number of Elevators: " + mapDetails[i].elevators + "</h5>" + 

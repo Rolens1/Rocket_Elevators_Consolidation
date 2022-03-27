@@ -1,8 +1,7 @@
 # README
 
 * 1 - HOW TO GET THIS APPLICATION UP AND RUNNING
-* 2 - FAKER GEM - Use fake data 
-* 3 - SET UP POSTGRES AS SECOND DATABASE
+* 2 - SET UP POSTGRES AS SECOND DATABASE
 
 ##  HOW TO GET THIS APPLICATION UP AND RUNNING
 
@@ -67,12 +66,6 @@ Ruby version required is 2.7.5 to make sure the compatibility is not compromised
         - "cap production puma:nginx_config"
         - Set up your cloudflare (DNS configuration)
 
-## FAKER GEM - Use fake data 
-* Install faker Gem
-* Add it to Gemfile
-* bundle install
-* Write require faker to use faker gem
-
 ## SET UP POSTGRES AS SECOND DATABASE
 * To set up postgres:
     - Make sure you download postgres and have it working on your computer
@@ -94,4 +87,5 @@ Ruby version required is 2.7.5 to make sure the compatibility is not compromised
     - To drop the database
         rake postgres:db:drop (edited) 
 
+## 
 
