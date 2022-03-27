@@ -1,4 +1,5 @@
 class LeadsController < ApplicationController
+  skip_before_filter  :verify_authenticity_token
 
   require 'uri'
   require 'open-uri'
