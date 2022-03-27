@@ -1,8 +1,8 @@
 # README
 
 * 1 - HOW TO GET THIS APPLICATION UP AND RUNNING
-* 2 - FAKER GEM - Use fake data 
-* 3 - SET UP POSTGRES AS SECOND DATABASE
+* 2 - SET UP POSTGRES AS SECOND DATABASE
+* 3 - APIs
 
 ##  HOW TO GET THIS APPLICATION UP AND RUNNING
 
@@ -67,23 +67,17 @@ Ruby version required is 2.7.5 to make sure the compatibility is not compromised
         - "cap production puma:nginx_config"
         - Set up your cloudflare (DNS configuration)
 
-## FAKER GEM - Use fake data 
-* Install faker Gem
-* Add it to Gemfile
-* bundle install
-* Write require faker to use faker gem
-
 ## SET UP POSTGRES AS SECOND DATABASE
 * To set up postgres:
     - Make sure you download postgres and have it working on your computer
     - bundle install (if you haven’t done so)
-        then ;
-    1 - Postgres:db:create
-    2 - Postgres:db:migrate
-    3 - rake postgres:db:import:fact_quotes
-    4 - rake postgres:db:import:fact_contacts
-    5 - rake postgres:db:import:fact_elevators
-    6 - rake postgres:db:import:dim_customers
+        then:
+    1. Postgres:db:create
+    2. Postgres:db:migrate
+    3. rake postgres:db:import:fact_quotes
+    4. rake postgres:db:import:fact_contacts
+    5. rake postgres:db:import:fact_elevators
+    6. rake postgres:db:import:dim_customers
 
 * Every time you save new data to our database, and want to include this data in the data warehouse for analysis. Please re-do steps 3-6, or the command for the corresponding table.
 
@@ -94,4 +88,46 @@ Ruby version required is 2.7.5 to make sure the compatibility is not compromised
     - To drop the database
         rake postgres:db:drop (edited) 
 
+## APIs
+
+### Notify: 
+Notify README
+
+CONFIGURATION
+The first thing to do is to register and activate your Notify account. After the first sign-in, you need to include your clientId and secret key in the http headers. You can find this information in the user settings page where the Notify credentials are.
+
+Once that is set up, you have to make an API call. Go to https://rapidapi.com/geert/api/notify-eu/ in the code snippets, select (Ruby) net::http and copy-paste it in Visual Studio Code. Make sure to add these 3 gems:
+require 'uri'
+require 'net/http'
+require 'openssl'
+
+After, a message will be sent to your inbox. You can check the logs in the Notify app to see what was sent.
+
+Next, you need to select the smtp channel and configure it with its unique key.
+
+MESSAGE TEMPLATE
+Create a new template and assign your selected channel. Add the content such as the text and logo. In the HTML editor, you need to add {{ fullName }} next to Greetings and  {{ projectName }} next to project.
+
+In Visual Studio Code, you need to call the Rocket Elevators contact form in order for these variables to print in your message. 
+\"name\": \"" + @lead.full_name + "\",
+\"email\": \"" + @lead.email + "\"
+
+TESTING
+Once your code is complete, you can go on the Rocket Elevators’ website, fill out the form and you should receive a confirmation email in your inbox with the full name and the project name you entered. To troubleshoot, you can check in Notify’s Log tab to make sure the api as well as the content work.
+
+### Freshdesk
+
+When a potential customer submits their contact information through the Contact Us form on the home page, or when he/she calculates a quote using the quote form, all the information, including any attachments from the contact form, are sent to Freshdesk to allow Rocket Elevators to manage their leads and quotes more easily.
+
+Please contact us for login credentials to the freshdesk console.
+
+### AWS Polly
+
+When an admin logins into the admin panel, they have the option to play an audio briefing of some key information derived from the database. The link to play this audio is on the bottom left as "Play Briefing" under "Links".
+
+### Dropbox
+
+When a lead becomes a customer, the admin have the option to send any relevant files associated with the lead to be sent to Dropbox. To do this, they need to click on the "show-in-app" button next to the lead they want to mark. The button will prompt Dropbox to save all the relevant files, and any files saved in the MYSQL database will be erased. 
+
+### Google Maps
 

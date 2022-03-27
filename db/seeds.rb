@@ -1,5 +1,6 @@
 require "faker"
 
+Map.destroy_all
 Employee.destroy_all
 Quote.destroy_all
 # User.destroy_all
@@ -597,9 +598,6 @@ quote9 = Quote.create!({
   p "Created #{Employee.count} employee and #{User.count} users."
   # Non quote
 
-  path = File.join(File.dirname(__FILE__),"./seeds/addresses-us-500.json")
-  records = JSON.parse(File.read(path))
-
   # Users
   100.times do |i|
     user = User.create!({
@@ -611,25 +609,52 @@ quote9 = Quote.create!({
     user.save
   end
 
-  # Addresses
-  100.times do |i|
-    adress_record = records["addresses"][i]
-    adress = Adress.create!({
+  path = File.join(File.dirname(__FILE__),"./seeds/real-addresses.json")
+  records = JSON.parse(File.read(path))
+
+  29.times do |i|
+    address_record = records["addresses"][i]
+    address = Adress.create!({
       type_of_adress: ['Residential', 'Commercial','Corporate'].sample,
       status: ['online','offline'].sample,
       entity: ["House","Office","PObox","Gouvernement"].sample,
-      number_and_street: adress_record["address1"],
-      suite_or_appartment: ['suite','appartment'].sample,
-      city: adress_record["city"],
-      postal_code: adress_record["postalCode"],
-      country: "United States",
-      notes: Faker::Company.buzzword
+      number_and_street: address_record["address1"],
+      suite_or_appartment: address_record["suite"],
+      city: address_record["city"],
+      state: address_record["state"],
+      postal_code: address_record["postalCode"],
+      latitude: address_record["latitude"],
+      longitude: address_record["longitude"],
+      country: "United States"
     })
-    adress.save
+    address.save
   end
 
+#   fake_path = File.join(File.dirname(__FILE__),"./seeds/addresses-us-500.json")
+#   fake_records = JSON.parse(File.read(fake_path))
+
+#   #Addresses
+#   30.upto(40) do |i|
+#     adress_record = fake_records["addresses"][i]
+#     adress = Adress.create!({
+#       type_of_adress: ['Residential', 'Commercial','Corporate'].sample,
+#       status: ['online','offline'].sample,
+#       entity: ["House","Office","PObox","Gouvernement"].sample,
+#       number_and_street: adress_record["address1"],
+#       suite_or_appartment: rand(1..500).to_s,
+#       city: adress_record["city"],
+#       state: adress_record["state"],
+#       postal_code: adress_record["postalCode"],
+#       latitude: adress_record["coordinates"]["lat"].to_s,
+#       longitude: adress_record["coordinates"]["lng"].to_s,
+#       country: "United States",
+#     })
+#     adress.save
+#   end
+  
   # Customers
-  for i in 1..(User.count / 2) do
+  # for i in 1..(User.count / 2) do
+  40.times do |i|
     customer = Customer.create!({
       Customers_Creation_Date:Faker::Date.backward(days: 1000),
       Company_Name:Faker::Company.unique.name,
@@ -639,31 +664,31 @@ quote9 = Quote.create!({
       Company_Description:Faker::Company.unique.catch_phrase,
       Full_Name_of_servive_Technical_Authority:Faker::Name.unique.name,
       Technical_Manager_Email_for_Servive:Faker::Internet.unique.email,
-      user_id: i,
-      adress_id: i
+      user_id: User.find(User.pluck(:id).sample).id,
+      adress_id: Adress.find(Adress.pluck(:id).sample).id
     })
     customer.save
   end
 
   # Buildings
-  100.times do
-    current_customer = Customer.find(Customer.pluck(:id).sample)
-    current_adress = Adress.find(Adress.pluck(:id).sample)
+ Adress.find_each do |i|
+    current_customer = Customer.where(id: i).first
     building = Building.create!({
       customer_id: current_customer.id,
-      adress_id: current_adress.id,
+      adress_id: i.id,
       Full_Name_of_the_building_administrator:Faker::Name.unique.name,
       Email_of_the_administrator_of_the_building:Faker::Internet.email,
       Phone_number_of_the_building_administrator:Faker::PhoneNumber.unique.cell_phone,
       Full_Name_of_the_technical_contact_for_the_building:Faker::Name.unique.name,
       Technical_contact_email_for_the_building:Faker::Internet.unique.email,
-      Technical_contact_phone_for_the_building:Faker::PhoneNumber.unique.cell_phone
+      Technical_contact_phone_for_the_building:Faker::PhoneNumber.unique.cell_phone,
+      No_of_floors: rand(5..50)
     })
     building.save
   end
 
   # Building details
-  100.times do
+  29.times do
     current_building = Building.find(Building.pluck(:id).sample)
     details = Detailsbuilding.create!({
       information_key:Faker::Company.buzzword,
@@ -674,7 +699,7 @@ quote9 = Quote.create!({
   end
   
   # Batteries
-  100.times do
+  40.times do
     current_building = Building.find(Building.pluck(:id).sample)
     current_employee = Employee.find(Employee.pluck(:id).sample)
     battery = Battery.create!({
@@ -691,12 +716,12 @@ quote9 = Quote.create!({
   end
 
   # Columns
-  100.times do
+  50.times do
     current_battery = Battery.find(Battery.pluck(:id).sample)
     column = Column.create!({
       battery_id: current_battery.id,
       set_type:['Residential','Commercial','Corporate'].sample,
-      nb_of_floors_served:Faker::Number.between(from: 8, to: 120),
+      nb_of_floors_served:Faker::Number.between(from: 8, to: 20),
       status:['online','offline'].sample,
       information: current_battery.information,
       notes: current_battery.information
@@ -705,11 +730,11 @@ quote9 = Quote.create!({
   end
 
   # Elevators
-  100.times do
+  70.times do
     current_column = Column.find(Column.pluck(:id).sample)
     elevator = Elevator.create!({
       column_id: current_column.id,
-      Serial_number:Faker::Number.between(from: 1, to: 5000),
+      Serial_number:Faker::Number.between(from: 1, to: 10),
       Model:['Standard','Premium','Excelium'].sample,
       Type:['Residential', 'Commercial','Corporate'].sample,
       Status:['online','offline'].sample,
@@ -738,6 +763,38 @@ quote9 = Quote.create!({
     leads.save
    end
 
+
+  Building.find_each do |b|
+    batteryCount = 0
+    columnCount = 0
+    elevatorCount = 0
+    Battery.find_each do |a|
+        if a.building_id == b.id
+            batteryCount += 1
+            Column.find_each do |c|
+                if c.battery_id == a.id
+                    columnCount += 1
+                end
+                Elevator.find_each do |e|
+                    if e.column_id = c.id
+                        elevatorCount += 1
+                    end
+                end
+            end
+        end
+    end
+    Map.create!({
+    location_of_the_building: b.adress.number_and_street + ", " + b.adress.city + ", " + b.adress.state + ", " + b.adress.country + ", " + b.adress.postal_code,
+    client_name: b.customer.Company_Name,
+    no_of_floors_in_the_building: b.No_of_floors,
+    no_of_batteries: batteryCount,
+    no_of_columns: columnCount,
+    no_of_elevators: elevatorCount,
+    full_name_of_technical_contact: b.Full_Name_of_the_technical_contact_for_the_building,
+    latitude: b.adress.latitude,
+    longitude: b.adress.longitude
+    })
+  end
 
 
 

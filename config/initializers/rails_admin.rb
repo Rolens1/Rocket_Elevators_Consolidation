@@ -31,9 +31,11 @@ RailsAdmin.config do |config|
   #     field :data
   #   end
   # end
+  config.excluded_models = [ Map ]
 
   config.navigation_static_links = {
-    'Play briefing' => 'rails_admin/data/playbriefing',
+    'Play Briefing' => 'rails_admin/data/playbriefing',
+    'Show Customers on Map' => 'rails_admin/data/map',
     'Data Warehouse' => 'rails_admin/data/index'
     
   }
