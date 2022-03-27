@@ -119,6 +119,7 @@ class LeadsController < ApplicationController
         end  
 
         site = RestClient::Resource.new(ENV['FRESHDESK_URL'], ENV["FRESHDESK_API_KEY"], 'X')
+        url = ENV['FRESHDESK_URL']
 
         if @lead.attached_files != nil 
           data = {
@@ -132,9 +133,19 @@ class LeadsController < ApplicationController
             "type": "Question",
             "subject": @lead.full_name + " from " + @lead.cie_name,
             "attachments": attachments,}
-            site.post(data)
+            site.post(data, :content_type => 'multipart/form-data')
+
+            # RestClient::Request.execute(
+            #   method: :post,
+            #   url: 'https://rocketelevatorsai.freshdesk.com/api/v2/tickets',
+            #   user: ENV["FRESHDESK_API_KEY"],
+            #   password: 'X',
+            #   playload: data,
+            #   headers: {"Content-Type" => 'multipart/form-data'}
+            # )
+
           else
-            data = {
+            data_wo_attachment = {
               "status": 2, 
               "priority": 1,
               "name": @lead.full_name, 
@@ -145,8 +156,17 @@ class LeadsController < ApplicationController
               "type": "Question",
               "subject": @lead.full_name + " from " + @lead.cie_name,
             }
-            data_json = JSON.generate(data)
-            site.post(data_json, headers = {"Content-Type" => "application/json"})
+            data_json = JSON.generate(data_wo_attachment)
+            site.post(data_json, :content_type => "application/json")
+            # RestClient::Request.execute(url_options.merge(
+            #   :method => :post,
+            #   :url => ENV['FRESHDESK_URL'],
+            #   :user => ENV["FRESHDESK_API_KEY"],
+            #   :password => 'X',
+            #   :playload => data_wo_attachment,
+            #   :headers => {"Content-Type" => 'application/json'})
+            # )
+
           end
           format.json  { render json: Lead.create(lead_params) }
         else
