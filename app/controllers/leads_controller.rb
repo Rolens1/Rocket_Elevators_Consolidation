@@ -153,7 +153,13 @@ class LeadsController < ApplicationController
             "subject": @lead.full_name + " from " + @lead.cie_name,
           }
           data_json = JSON.generate(data_wo_attachment)
-          site.post(data_json, :content_type => "application/json")
+          site.post(data_json, :content_type => "application/json"){ |response, request, result, &block|
+          if [301, 302, 307].include? response.code
+            redirected_url = response.headers[:location]
+          # else
+          #   response.return!(request, result, &block)
+          end
+        }
           # RestClient::Request.execute(url_options.merge(
           #   :method => :post,
           #   :url => ENV['FRESHDESK_URL'],
