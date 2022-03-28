@@ -140,3 +140,7 @@ Steps to configure slack:
 - Add the app to the workspace
 - Install the slack-notifier gem
 - Create a web hook  and adding it to you code
+
+### Twilio
+
+When an elevator status is changed from any non-Intervention status to "Intervention" a text message is immediately sent to the technician in charge of the elevators alerting him that an elevator needs to be checked and gives him the elevator ID at the same time. You can try this very easily by changing an elevator status in the admin pannel.
