@@ -1,3 +1,4 @@
+require "faker"
 require 'date'
 task spec: ['postgres:db:test:prepare']
 
@@ -37,6 +38,31 @@ namespace :postgres do
           end
         end
         puts "#{count} fact_quotes saved."
+      end
+
+      desc "Import fact_interventions data from MYSQL"
+      task fact_interventions: :environment do
+         FactIntervention.destroy_all
+        count = 0
+        20.times do |record|
+          fi = FactIntervention.new
+          fi.employeeID = Employee.find(Employee.pluck(:id).sample)
+          fi.buildingID = Building.find(Building.pluck(:id).sample)
+          fi.batteryID =  Battery.find(Battery.pluck(:id).sample)
+          fi.columnID = Column.find(Column.pluck(:id).sample)
+          fi.elevatorID = Elevator.find(Elevator.pluck(:id).sample)
+          fi.start_Date_And_Time_Of_the_Intervention = Faker::Date.backward(days: 2000)
+          fi.end_Date_And_Time_Of_The_Intervention = Faker::Date.backward(days: 1000)
+          fi.result = ["Success"," Failure ","Incomplete"].sample
+          fi.report = Faker::Lorem.paragraph(sentence_count: 2, supplemental: true, random_sentences_to_add: 4)
+          fi.status = ["Pending "," InProgress "," Interrupted "," Resumed "," Complete"].sample
+          if fi.save
+            count = count + 1
+          else
+            puts "... bad: #{u.errors.full_messages.join(',')}"
+          end
+        end
+        puts "#{count} fact_intervention saved."
       end
 
       desc "Import fact_contact data from MYSQL"
