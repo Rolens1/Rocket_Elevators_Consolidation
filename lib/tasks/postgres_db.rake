@@ -1,3 +1,4 @@
+require "faker"
 require 'date'
 task spec: ['postgres:db:test:prepare']
 
@@ -37,6 +38,46 @@ namespace :postgres do
           end
         end
         puts "#{count} fact_quotes saved."
+      end
+
+      desc "Import fact_interventions data from MYSQL"
+      task fact_interventions: :environment do
+         FactIntervention.destroy_all
+        count = 0
+        20.times do |record|
+          fi = FactIntervention.new
+          fi.employeeID = Faker::Number.between(from: 1, to: 25) 
+          fi.buildingID = Building.find(Building.pluck(:id).sample).id
+          battery = Battery.where(building_id: fi.buildingID).first
+          if battery != nil
+              fi.batteryID = battery.id
+          else
+            fi.batteryID = nil
+          end
+          column = Column.where(battery_id: fi.batteryID).first
+          if column != nil
+              fi.columnID = column.id
+          else 
+            fi.columnID = nil
+          end
+          elevator = Elevator.where(column_id: fi.columnID).first
+          if elevator != nil
+              fi.elevatorID = elevator.id
+          else
+            fi.elevatorID = nil
+          end
+          fi.start_Date_And_Time_Of_the_Intervention = Faker::Date.between(from: '2018-09-23', to: '2021-09-25') 
+          fi.end_Date_And_Time_Of_The_Intervention = Faker::Date.between(from: '2021-09-26', to: '2022-03-25') 
+          fi.result = ["Success"," Failure ","Incomplete"].sample
+          fi.report = Faker::Lorem.paragraph(sentence_count: 2, supplemental: true, random_sentences_to_add: 4)
+          fi.status = ["Pending "," InProgress "," Interrupted "," Resumed "," Complete"].sample
+          if fi.save
+            count = count + 1
+          else
+            puts "... bad: #{u.errors.full_messages.join(',')}"
+          end
+        end
+        puts "#{count} fact_intervention saved."
       end
 
       desc "Import fact_contact data from MYSQL"
