@@ -72,12 +72,13 @@ Ruby version required is 2.7.5 to make sure the compatibility is not compromised
     - Make sure you download postgres and have it working on your computer
     - bundle install (if you haven’t done so)
         then:
-    1. Postgres:db:create
-    2. Postgres:db:migrate
+    1. rake postgres:db:create
+    2. rake postgres:db:migrate
     3. rake postgres:db:import:fact_quotes
     4. rake postgres:db:import:fact_contacts
     5. rake postgres:db:import:fact_elevators
     6. rake postgres:db:import:dim_customers
+    7. rake postgres:db:import:fact_interventions
 
 * Every time you save new data to our database, and want to include this data in the data warehouse for analysis. Please re-do steps 3-6, or the command for the corresponding table.
 
