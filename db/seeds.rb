@@ -705,7 +705,7 @@ quote9 = Quote.create!({
     battery = Battery.create!({
       building_id: current_building.id,
       employee_id: current_employee.id,
-      status:['online','offline'].sample,
+      status:['online','offline', 'intervention'].sample,
       date_of_commissioning:Faker::Date.backward(days: 1000),
       date_of_last_inspection:Faker::Date.backward(days: 900),
       certificate_of_operations:'Inspected',
@@ -722,7 +722,7 @@ quote9 = Quote.create!({
       battery_id: current_battery.id,
       set_type:['Residential','Commercial','Corporate'].sample,
       nb_of_floors_served:Faker::Number.between(from: 8, to: 20),
-      status:['online','offline'].sample,
+      status:['online','offline', 'intervention'].sample,
       information: current_battery.information,
       notes: current_battery.information
     })
@@ -737,7 +737,7 @@ quote9 = Quote.create!({
       Serial_number:Faker::Number.between(from: 1, to: 10),
       Model:['Standard','Premium','Excelium'].sample,
       Type:['Residential', 'Commercial','Corporate'].sample,
-      Status:['online','offline'].sample,
+      Status:['online','offline', 'intervention'].sample,
       Date_of_commissioning: Faker::Date::between(from: '2020-01-01', to: '2021-11-29'),
       Date_of_last_inspection: Faker::Date::between(from: '2020-01-01', to: '2021-11-29'),
       Certificate_of_inspection:'Inspected',
