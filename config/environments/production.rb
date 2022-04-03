@@ -97,7 +97,4 @@ Rails.application.configure do
 
   #config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-  FRESHDESK_API_KEY = ENV['FRESHDESK_API_KEY']
-  FRESHDESK_API = ENV['FRESHDESK_API']
-
 end
