@@ -41,8 +41,6 @@ class LeadsController < ApplicationController
     redirect_to rails_admin_url, notice: "Files were successfully sent to Dropbox. Now please manually add this lead as a customer. Sorry I didn't have time to make this happen for you automatically..."
   end
 
-  
-
   def update
     respond_to do |format|
       if @lead.update(quote_params)
@@ -65,7 +63,6 @@ class LeadsController < ApplicationController
       FileUtils.mkdir_p(dirname)
     end
     
-    
     if @lead.attached_files != nil
       uploaded_io = params[:lead][:attached_files]
       File.open(Rails.root.join('public','uploads', cie, uploaded_io.original_filename),'wb') do |file|
@@ -73,7 +70,7 @@ class LeadsController < ApplicationController
       end
     end
     
-    if @lead.full_name == nil
+      if @lead.full_name == nil
         @lead.full_name = "n/a"
       end
       if @lead.cie_name == nil
@@ -106,85 +103,89 @@ class LeadsController < ApplicationController
       companyName = @lead.cie_name.to_s.gsub(/\s+/, '')
 
       filepath = Rails.root.join('public','uploads', companyName)
-      puts filepath
       attachments = []
       Dir.glob(filepath+ "*") do |f|
         filename = File.basename(f)
-        puts f
         attachments.push(File.new(f, 'rb')) 
       end  
 
       site = RestClient::Resource.new(ENV['FRESHDESK_URL'], ENV["FRESHDESK_API_KEY"], 'X')
       url = ENV['FRESHDESK_URL']
-
-      if @lead.attached_files != nil 
-        data = {
-          "status": 2, 
-          "priority": 1,
-          "name": @lead.full_name, 
-          "phone": @lead.phone,
-          "email": @lead.email,
-          "description": 
-            "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
-          "type": "Question",
-          "subject": @lead.full_name + " from " + @lead.cie_name,
-          "attachments": attachments,}
-          site.post(data, :content_type => 'multipart/form-data')
-
-          # RestClient::Request.execute(
-          #   method: :post,
-          #   url: 'https://rocketelevatorsai.freshdesk.com/api/v2/tickets',
-          #   user: ENV["FRESHDESK_API_KEY"],
-          #   password: 'X',
-          #   playload: data,
-          #   headers: {"Content-Type" => 'multipart/form-data'}
-          # )
-
-        else
-          data_wo_attachment = {
-            "status": 2, 
-            "priority": 1,
-            "name": @lead.full_name, 
-            "phone": @lead.phone,
-            "email": @lead.email,
-            "description": 
-              "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
-            "type": "Question",
-            "subject": @lead.full_name + " from " + @lead.cie_name,
-          }
-          data_json = JSON.generate(data_wo_attachment)
-          site.post(data_json, :content_type => "application/json"){ |response, request, result, &block|
-          if [301, 302, 307].include? response.code
-            redirected_url = response.headers[:location]
-          # else
-          #   response.return!(request, result, &block)
+    
+      respond_to do |format|
+        if @lead.save
+    
+          if @lead.attached_files != nil 
+            data = {
+              "status": 2, 
+              "priority": 1,
+              "email": @lead.email,
+              "description": 
+                "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
+              "type": "Question",
+              "subject": @lead.full_name + " from " + @lead.cie_name,
+              "attachments": attachments
+            }
+              # site.post(data, :content_type => 'multipart/form-data')
+    
+              request = RestClient::Request.execute(
+                method: :post,
+                url: 'https://rocketelevatorsai.freshdesk.com/api/v2/tickets',
+                user: ENV["FRESHDESK_API_KEY"],
+                password: 'X',
+                payload: data,
+                headers: {"Content-Type" => 'multipart/form-data'}
+              )
+    
+              logger.debug "------------ attachment #{request.code} -------------"
+    
+          else
+              data_wo_attachment = {
+                status: 2, 
+                priority: 1,
+                subject: "#{@lead.full_name} from #{@lead.cie_name}",
+                email: "#{@lead.email}",
+                description: 
+                  "The contact" + @lead.full_name + " from company " + @lead.cie_name + " can be reached at email " + @lead.email + " and at phone number " + @lead.phone + ". " + @lead.department_in_charge + " has a project named " + @lead.project_name + " which would require contribution from Rocket Elevators. The project description is " + @lead.project_description + ". Attached message: " + @lead.message + ". The Contact has " + has_attachment + " uploaded an attachment.",
+                type: "Question"
+              }
+              data_json = JSON.generate(data_wo_attachment)
+              # site.post(data_json, :content_type => "application/json"){ |response, request, result, &block|
+              #   logger.debug "----------- #{response.code} --------------"
+              #   if [301, 302, 307].include? response.code
+              #     redirected_url = response.headers[:location]
+              #   # else
+              #   #   response.return!(request, result, &block)
+              #   end
+              # }
+    
+              request = RestClient::Request.execute(
+                method: :post,
+                url: "https://rocketelevatorsai.freshdesk.com/api/v2/tickets",
+                user: ENV["FRESHDESK_API_KEY"],
+                password: 'X',
+                payload: data_json,
+                headers: {"Content-Type" => 'application/json'}
+              )
+    
+              logger.debug "----------- #{request.code} --------------"
+    
           end
-        }
-          # RestClient::Request.execute(url_options.merge(
-          #   :method => :post,
-          #   :url => ENV['FRESHDESK_URL'],
-          #   :user => ENV["FRESHDESK_API_KEY"],
-          #   :password => 'X',
-          #   :playload => data_wo_attachment,
-          #   :headers => {"Content-Type" => 'application/json'})
-          # )
-        end
-
-    respond_to do |format|
-      if @lead.save
+    
           format.html  { redirect_to root_path, notice: 'Your message has been successfully sent!' }
           format.json  { render json: Lead.create(lead_params) }
         else
           format.html  { redirect_to root_path, notice: 'Your message was not sent successfully.' }
           format.json  { render :json => @lead.errors, :status => :unprocessable_entity }
+        end
       end
-    end
 
- end
+  end
 
+  private
 
-def lead_params
-  params.require(:lead).permit(:full_name, :cie_name, :email, :phone, :project_name, :project_description, :department_in_charge, :message, :attached_files,)
-end
+  def lead_params
+    params.require(:lead).permit(:full_name, :cie_name, :email, :phone, :project_name, :project_description, :department_in_charge, :message, :attached_files)
+  end
 
 end
