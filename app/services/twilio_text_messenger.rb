@@ -9,7 +9,7 @@ class TwilioTextMessenger
       client = Twilio::REST::Client.new(ENV['TWILIO_SID'], ENV['TWILIO_KEY'])
       client.messages.create({
         from: '+17069898933',
-        to: '+15146862467',
+        to: '+14388697178',
         body: message
       })
     end

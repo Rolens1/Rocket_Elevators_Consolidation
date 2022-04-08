@@ -81,6 +81,6 @@ class InterventionsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def intervention_params
       # params.fetch(:intervention, {:customerID,:buildingID,:})
-      params.require(:intervention).permit(:customerID, :buildingID,)
+      params.require(:intervention).permit(:customerID, :buildingID,:batteryID, :columnID,:elevatorID,:employeeID,:result,:report,:status)
     end
 end
