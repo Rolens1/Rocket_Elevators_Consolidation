@@ -1,0 +1,25 @@
+    <ul id="customerVal" for='intervention:notes'>
+    <% @customers.each do |customer| %>
+      <tr>
+      <p>This is customer</p>
+        <li onclick="putSelect(value)" value='<%=customer.id%>'><%= customer.Company_Name%></li>
+        <% customer.buildings.each do |building| %>
+        <p>This is building</p>
+          <a onclick="putSelect(value)" value='<%=building.id%>'><%= building.Full_Name_of_the_building_administrator%> <%= building.id%></a>
+          <% building.batteries.each do |battery| %>
+          <p>This is battery</p>
+            <a onclick="putSelect(value)" value='<%=battery.id%>'><%= battery.status%> <%= battery.id%></a>
+            <br>
+          <% end %>
+        <% end %>
+
+        <%# <td><%= link_to 'Edit', edit_intervention_path(intervention) %>
+        <%# <td><%= link_to 'Destroy', intervention, method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%# </tr> %>
+    <% end %>
+    </ul>
+
+    <div class="col-md-4">
+    <%= f.label :buildingID, "Business name"%>
+    <%= f.collection_select :buildingID, Building.where(id: 1),:id ,:Full_Name_of_the_building_administrator %>
+</div>

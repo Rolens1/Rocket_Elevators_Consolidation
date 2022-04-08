@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
+  resources :interventions
   post 'twilio/sms'
   resources :quotes
   get 'quotes/quote'
   get 'errors/not_found'
   get 'errors/internal_server_error'
+  get 'current_user' => "users#current_user"
 
   root "home#index"
  
@@ -47,6 +49,9 @@ Rails.application.routes.draw do
   
   match "404", to: "errors#not_found", via: :all
   match "500", to: "errors#internal_server_error", via: :all
+
+  get 'get_buildings_by_customer/:customerID', to: 'interventions#get_buildings_by_customer'  
+  get '/building_search' => 'buildings#building_search'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
