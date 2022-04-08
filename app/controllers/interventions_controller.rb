@@ -33,6 +33,7 @@ class InterventionsController < ApplicationController
 
     respond_to do |format|
       if @intervention.save
+        @intervention.author = current_user
         
         format.html { redirect_to intervention_url(@intervention), notice: "Intervention was successfully created." }
         format.json { render :show, status: :created, location: @intervention }

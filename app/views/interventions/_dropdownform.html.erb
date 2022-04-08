@@ -81,6 +81,7 @@
     <%= form_for Intervention.new do |f| %>
 
     <div data-controller="customer">
+      <%= f.label :customerID, "Customer" %>
     <div class="row">
         <select id="#customerID">
         <% @customers.each do |c| %>
