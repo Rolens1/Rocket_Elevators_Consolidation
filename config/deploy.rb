@@ -13,8 +13,8 @@ namespace :custom do
     end
   end
 
-set :application, "EricGaudreault"
-set :repo_url, "git@github.com:xa2113/Rocket_Elevators_API.git"
+set :application, "pierrerolenscheridor"
+set :repo_url, "git@github.com:Rolens1/Rocket_Elevators_Consolidation.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
