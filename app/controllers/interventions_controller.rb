@@ -1,5 +1,6 @@
 class InterventionsController < ApplicationController
   before_action :set_intervention, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
 
   # GET /interventions or /interventions.json
   def index
