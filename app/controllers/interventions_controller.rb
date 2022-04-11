@@ -28,9 +28,6 @@ class InterventionsController < ApplicationController
   def edit
   end
   
-  def current_user
-    render json: {id: current_user.id}
-  end
 
   # POST /interventions or /interventions.json
   def create
