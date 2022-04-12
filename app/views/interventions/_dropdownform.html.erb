@@ -80,6 +80,13 @@
     <%= javascript_include_tag('interventions.js') %>
     <%= form_for Intervention.new do |f| %>
 
+    <div class="row">
+        <div class="col-md-4">
+            <%= f.label :author, "Author" %>
+            <%=f.select :author, @intervention.author, {prompt: 'Author'}, {class: 'form-select', id: "author", required: true} %>
+        </div>
+    </div>
+
     <div data-controller="customer">
       <%= f.label :customerID, "Customer" %>
     <div class="row">
