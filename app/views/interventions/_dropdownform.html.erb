@@ -83,7 +83,7 @@
     <div class="row">
         <div class="col-md-4">
             <%= f.label :author, "Author" %>
-            <%=f.select :author, @intervention.author, {prompt: 'Author'}, {class: 'form-select', id: "author", required: true} %>
+            <%=f.select :author, @users.current_user, {prompt: 'Author'}, {class: 'form-select', id: "author", required: true} %>
         </div>
     </div>
 
