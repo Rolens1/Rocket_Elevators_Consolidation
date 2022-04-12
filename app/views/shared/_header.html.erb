@@ -68,6 +68,7 @@
                       <li>
                         <a href="commercial.html">Corporate Building Service</a>
                       </li>
+                      <%= link_to "INTERVENTION", interventions_path %>
                     </ul>
                   </li>
                   <li
@@ -111,7 +112,6 @@
                   >
                     <% if user_signed_in? and current_user.admin? %>
                       <%= link_to "ADMIN", rails_admin_path %>
-                      <%= link_to "INTERVENTION", interventions_path %>
                     <% end %>
                     
                   

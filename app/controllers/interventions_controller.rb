@@ -1,5 +1,6 @@
 class InterventionsController < ApplicationController
   before_action :set_intervention, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
 
   # GET /interventions or /interventions.json
   def index
@@ -35,7 +36,6 @@ class InterventionsController < ApplicationController
 
     respond_to do |format|
       if @intervention.save
-        @intervention.author = current_user
         
         format.html { redirect_to intervention_url(@intervention), notice: "Intervention was successfully created." }
         format.json { render :show, status: :created, location: @intervention }
